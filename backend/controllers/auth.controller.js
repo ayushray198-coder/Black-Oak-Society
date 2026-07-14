@@ -5,6 +5,7 @@ import OTP from "../models/otp.model.js";
 import generateOtp from "../utils/generateOtp.js";
 import sendEmail from "../utils/sendEmail.js";
 import cookieOptions from "../utils/cookiesOptions.js";
+import PasswordReset from "../models/passwordReset.model.js";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -108,6 +109,7 @@ const verifyOtp = async (req, res) => {
       email: otpData.email,
       password: otpData.password,
       phoneNumber: otpData.phoneNumber,
+      isVerified: true,
     });
 
     const accessToken = generateAccessToken(user._id);
@@ -338,4 +340,275 @@ const refreshAccessToken = async (req, res) => {
   }
 };
 
-export { sendOtp, verifyOtp, loginUser, getProfile, logoutUser, refreshAccessToken };
+
+
+const resendOtp = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Check Email
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required.",
+      });
+    }
+
+    // Find Existing OTP Record
+    const otpData = await OTP.findOne({ email });
+
+    if (!otpData) {
+      return res.status(404).json({
+        success: false,
+        message: "No pending signup found.",
+      });
+    }
+
+    // Generate New OTP
+    const newOtp = generateOtp();
+
+    // Update OTP & Expiry
+    otpData.otp = newOtp;
+    otpData.expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+
+    await otpData.save();
+
+    // Send New OTP
+    await sendEmail(email, newOtp);
+
+    return res.status(200).json({
+      success: true,
+      message: "New OTP sent successfully.",
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+
+
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Check Email
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required.",
+      });
+    }
+
+    // Check User Exists
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    // Delete Previous Reset OTP
+    await PasswordReset.deleteMany({ email });
+
+    // Generate New OTP
+    const otp = generateOtp();
+
+    // Save OTP
+    await PasswordReset.create({
+      email,
+      otp,
+      expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+    });
+
+    // Send OTP
+    await sendEmail(email, otp);
+
+    return res.status(200).json({
+      success: true,
+      message: "Password reset OTP sent successfully.",
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+
+
+const resetPassword = async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+
+    // Validation
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Email, OTP and New Password are required.",
+      });
+    }
+
+    // Find Reset Record
+    const resetData = await PasswordReset.findOne({ email });
+
+    if (!resetData) {
+      return res.status(404).json({
+        success: false,
+        message: "Reset request not found.",
+      });
+    }
+
+    // Check OTP
+    if (resetData.otp !== otp) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid OTP.",
+      });
+    }
+
+    // Check Expiry
+    if (resetData.expiresAt < new Date()) {
+      await PasswordReset.deleteOne({ email });
+
+      return res.status(400).json({
+        success: false,
+        message: "OTP has expired.",
+      });
+    }
+
+    // Find User
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    // Hash New Password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update Password
+    user.password = hashedPassword;
+
+    await user.save();
+
+    // Delete Reset OTP
+    await PasswordReset.deleteOne({ email });
+
+    return res.status(200).json({
+      success: true,
+      message: "Password reset successfully.",
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+
+
+const changePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+
+    // Validation
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Old Password and New Password are required.",
+      });
+    }
+
+    // Get Logged In User
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    // Compare Old Password
+    const isPasswordCorrect = await bcrypt.compare(
+      oldPassword,
+      user.password
+    );
+
+    if (!isPasswordCorrect) {
+      return res.status(400).json({
+        success: false,
+        message: "Old password is incorrect.",
+      });
+    }
+
+    // Check Same Password
+    if (oldPassword === newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "New password must be different from old password.",
+      });
+    }
+
+    // Hash New Password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update Password
+    user.password = hashedPassword;
+
+    // Security: Remove Refresh Token
+    user.refreshToken = "";
+
+    await user.save();
+
+    // Clear Cookies
+    return res
+      .status(200)
+      .clearCookie("accessToken")
+      .clearCookie("refreshToken")
+      .json({
+        success: true,
+        message: "Password changed successfully. Please login again.",
+      });
+
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export {
+  sendOtp,
+  verifyOtp,
+  resendOtp,
+  forgotPassword,
+  resetPassword,
+  changePassword,
+  loginUser,
+  getProfile,
+  logoutUser,
+  refreshAccessToken,
+};
