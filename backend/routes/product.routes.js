@@ -1,8 +1,9 @@
 import express from "express";
 
-import { createProduct, getAllProducts, getProductById, updateProduct , deleteProduct} from "../controllers/product.controller.js";
+import { createProduct, getAllProducts, getProductById, updateProduct, deleteProduct } from "../controllers/product.controller.js";
 
 import authMiddleware from "../middlewares/auth.middleware.js";
+import validateObjectId from "../middlewares/validateObjectId.middleware.js";
 
 const router = express.Router();
 
@@ -13,12 +14,12 @@ router.post("/", authMiddleware, createProduct);
 router.get("/", getAllProducts);
 
 // Get Product By ID
-router.get("/:id", getProductById);
+router.get("/:id", validateObjectId, getProductById,);
 
 // Update Product
-router.put("/:id", authMiddleware, updateProduct);
+router.put("/:id", authMiddleware, validateObjectId, updateProduct);
 
 // Delete Product
-router.delete("/:id", authMiddleware, deleteProduct);
+router.delete("/:id", authMiddleware, validateObjectId, deleteProduct);
 
 export default router;
