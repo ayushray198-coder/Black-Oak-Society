@@ -216,7 +216,7 @@ const loginUser = async (req, res) => {
       .status(200)
       .cookie("accessToken", accessToken, {
         ...cookieOptions,
-        maxAge: 15 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 1000,
       })
       .cookie("refreshToken", refreshToken, {
         ...cookieOptions,
