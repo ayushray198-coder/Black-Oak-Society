@@ -1,23 +1,25 @@
 import Brand from "../models/brand.model.js";
 import Category from "../models/category.model.js";
+import slugify from "slugify";
 
 export const createCategory = async (req, res) => {
   try {
-    const {
-      name,
-      slug,
-      description,
-      image,
-      brand,
-    } = req.body;
+    const { name, description, image, brand } = req.body;
 
     // Validation
-    if (!name || !slug || !brand) {
+    if (!name || !brand) {
       return res.status(400).json({
         success: false,
-        message: "Name, slug and brand are required.",
+        message: "Name and brand are required.",
       });
     }
+
+    // Generate Slug
+    const generatedSlug = slugify(name, {
+      lower: true,
+      strict: true,
+      trim: true,
+    });
 
     // Check Brand Exists
     const existingBrand = await Brand.findById(brand);
@@ -31,7 +33,10 @@ export const createCategory = async (req, res) => {
 
     // Check Duplicate Category
     const existingCategory = await Category.findOne({
-      $or: [{ name }, { slug }],
+      $or: [
+        { name },
+        { slug: generatedSlug },
+      ],
     });
 
     if (existingCategory) {
@@ -44,7 +49,7 @@ export const createCategory = async (req, res) => {
     // Create Category
     const category = await Category.create({
       name,
-      slug,
+      slug: generatedSlug,
       description,
       image,
       brand,
@@ -54,7 +59,7 @@ export const createCategory = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: "Category created successfully.",
-      category,
+      data: category,
     });
 
   } catch (error) {
