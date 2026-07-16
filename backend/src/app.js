@@ -12,6 +12,7 @@ import errorMiddleware from "../middlewares/error.middleware.js";
 import cartRoutes from "../routes/cart.routes.js";
 import wishlistRoutes from "../routes/wishlist.routes.js";
 import addressRoutes from "../routes/address.routes.js";
+import orderRoutes from "../routes/order.routes.js";
 
 const app = express();
 
@@ -31,7 +32,7 @@ app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/wishlist", wishlistRoutes);
 app.use("/api/v1/address", addressRoutes);
-
+app.use("/api/v1/orders", orderRoutes);
 
 app.use(errorMiddleware);
 
