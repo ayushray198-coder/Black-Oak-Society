@@ -77,18 +77,56 @@ export const createCategory = async (req, res) => {
 
 export const getAllCategories = async (req, res) => {
   try {
-    const categories = await Category.find()
+    const {
+      search,
+      brand,
+      page = 1,
+      limit = 10,
+      sort = "-createdAt",
+    } = req.query;
+
+    const query = {};
+
+    // Search
+    if (search) {
+      query.name = {
+        $regex: search,
+        $options: "i",
+      };
+    }
+
+    // Filter by Brand
+    if (brand) {
+      query.brand = brand;
+    }
+
+    const currentPage = Number(page);
+    const perPage = Number(limit);
+
+    const totalCategories = await Category.countDocuments(query);
+
+    const categories = await Category.find(query)
       .populate("brand", "name")
-      .sort({ createdAt: -1 });
+      .sort(sort)
+      .skip((currentPage - 1) * perPage)
+      .limit(perPage);
 
     return res.status(200).json({
       success: true,
       message: "Categories fetched successfully.",
-      total: categories.length,
+
+      pagination: {
+        totalCategories,
+        currentPage,
+        totalPages: Math.ceil(totalCategories / perPage),
+        perPage,
+      },
+
       data: categories,
     });
+
   } catch (error) {
-    console.error("Get Categories Error:", error);
+    console.error(error);
 
     return res.status(500).json({
       success: false,
@@ -131,7 +169,7 @@ export const getCategoryById = async (req, res) => {
 
 
 
- 
+
 
 
 export const updateCategory = async (req, res) => {

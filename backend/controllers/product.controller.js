@@ -102,19 +102,68 @@ export const createProduct = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find()
+    const {
+      search,
+      brand,
+      category,
+      page = 1,
+      limit = 10,
+      sort = "-createdAt",
+    } = req.query;
+
+    const query = {};
+
+    // Search
+    if (search) {
+      query.name = {
+        $regex: search,
+        $options: "i",
+      };
+    }
+
+    // Brand Filter
+    if (brand) {
+      query.brand = brand;
+    }
+
+    // Category Filter
+    if (category) {
+      query.category = category;
+    }
+
+    // Active Products Only
+    query.status = "active";
+
+    const currentPage = Number(page);
+    const perPage = Number(limit);
+
+    const totalProducts = await Product.countDocuments(query);
+
+    const products = await Product.find(query)
       .populate("brand", "name")
       .populate("category", "name")
-      .sort({ createdAt: -1 });
+      .sort(sort)
+      .skip((currentPage - 1) * perPage)
+      .limit(perPage);
 
     return res.status(200).json({
       success: true,
       message: "Products fetched successfully.",
-      total: products.length,
+
+      pagination: {
+        totalProducts,
+        currentPage,
+        totalPages: Math.ceil(
+          totalProducts / perPage
+        ),
+        perPage,
+      },
+
       data: products,
     });
+
   } catch (error) {
-    console.error("Get Products Error:", error);
+    console.error(error);
 
     return res.status(500).json({
       success: false,

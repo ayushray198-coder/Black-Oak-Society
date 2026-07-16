@@ -4,11 +4,12 @@ import { createProduct, getAllProducts, getProductById, updateProduct, deletePro
 
 import authMiddleware from "../middlewares/auth.middleware.js";
 import validateObjectId from "../middlewares/validateObjectId.middleware.js";
+import adminMiddleware from "../middlewares/admin.middleware.js";
 
 const router = express.Router();
 
 // Create Product
-router.post("/", authMiddleware, createProduct);
+router.post("/", authMiddleware, adminMiddleware, createProduct);
 
 // Get All Products
 router.get("/", getAllProducts);
@@ -17,9 +18,9 @@ router.get("/", getAllProducts);
 router.get("/:id", validateObjectId, getProductById,);
 
 // Update Product
-router.put("/:id", authMiddleware, validateObjectId, updateProduct);
+router.put("/:id", authMiddleware, adminMiddleware, validateObjectId, updateProduct);
 
 // Delete Product
-router.delete("/:id", authMiddleware, validateObjectId, deleteProduct);
+router.delete("/:id", authMiddleware, adminMiddleware, validateObjectId, deleteProduct);
 
 export default router;

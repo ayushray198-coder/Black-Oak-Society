@@ -4,11 +4,12 @@ import { createCategory, getAllCategories, getCategoryById, updateCategory, dele
 
 import authMiddleware from "../middlewares/auth.middleware.js";
 import validateObjectId from "../middlewares/validateObjectId.middleware.js";
+import adminMiddleware from "../middlewares/admin.middleware.js";
 
 const router = express.Router();
 
 // Create Category
-router.post("/", authMiddleware, createCategory);
+router.post("/", authMiddleware, adminMiddleware, createCategory);
 
 
 // Get All Categories
@@ -18,9 +19,9 @@ router.get("/", getAllCategories);
 router.get("/:id", validateObjectId, getCategoryById);
 
 // update category
-router.put("/:id", authMiddleware, validateObjectId, updateCategory);
+router.put("/:id", authMiddleware, adminMiddleware, validateObjectId, updateCategory);
 
 // Delete Category
-router.delete("/:id", authMiddleware, validateObjectId, deleteCategory);
+router.delete("/:id", authMiddleware, adminMiddleware, validateObjectId, deleteCategory);
 
 export default router;

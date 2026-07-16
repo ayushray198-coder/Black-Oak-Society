@@ -4,6 +4,9 @@ import { placeOrder, getMyOrders, getOrderById, cancelOrder, updateOrderStatus }
 
 import authMiddleware from "../middlewares/auth.middleware.js";
 
+import adminMiddleware from "../middlewares/admin.middleware.js";
+import validateObjectId from "../middlewares/validateObjectId.middleware.js";
+
 const router = express.Router();
 
 // Place Order
@@ -13,12 +16,12 @@ router.post("/", authMiddleware, placeOrder);
 router.get("/", authMiddleware, getMyOrders);
 
 // Get Order By ID
-router.get("/:id", authMiddleware, getOrderById);
+router.get("/:id", authMiddleware, validateObjectId, getOrderById);
 
 // Cancel Order
-router.patch("/:id/cancel", authMiddleware, cancelOrder);
+router.patch("/:id/cancel", authMiddleware, validateObjectId, cancelOrder);
 
 // Update Order Status (Admin)
-router.patch("/:id/status", authMiddleware, updateOrderStatus);
+router.patch("/:id/status", authMiddleware, adminMiddleware, validateObjectId, updateOrderStatus);
 
 export default router;

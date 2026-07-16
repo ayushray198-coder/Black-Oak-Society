@@ -1,6 +1,6 @@
 import Brand from "../models/brand.model.js";
 
-const createBrand = async (req, res) => {
+export const createBrand = async (req, res) => {
   try {
     const {
       name,
@@ -62,16 +62,47 @@ const createBrand = async (req, res) => {
 
 
 
-const getAllBrands = async (req, res) => {
+export const getAllBrands = async (req, res) => {
   try {
-    const brands = await Brand.find({ isActive: true })
-      .sort({ createdAt: -1 })
-      .populate("createdBy", "fullName email");
+    const {
+      search,
+      page = 1,
+      limit = 10,
+      sort = "-createdAt",
+    } = req.query;
+
+    const query = {};
+
+    // Search
+    if (search) {
+      query.name = {
+        $regex: search,
+        $options: "i",
+      };
+    }
+
+    const currentPage = Number(page);
+    const perPage = Number(limit);
+
+    const totalBrands = await Brand.countDocuments(query);
+
+    const brands = await Brand.find(query)
+      .sort(sort)
+      .skip((currentPage - 1) * perPage)
+      .limit(perPage);
 
     return res.status(200).json({
       success: true,
-      count: brands.length,
-      brands,
+      message: "Brands fetched successfully.",
+
+      pagination: {
+        totalBrands,
+        currentPage,
+        totalPages: Math.ceil(totalBrands / perPage),
+        perPage,
+      },
+
+      data: brands,
     });
 
   } catch (error) {
@@ -86,7 +117,7 @@ const getAllBrands = async (req, res) => {
 
 
 
-const getBrandById = async (req, res) => {
+export const getBrandById = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -119,7 +150,7 @@ const getBrandById = async (req, res) => {
 
 
 
-const updateBrand = async (req, res) => {
+export const updateBrand = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -193,7 +224,7 @@ const updateBrand = async (req, res) => {
 
 
 
-const deleteBrand = async (req, res) => {
+export const deleteBrand = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -224,4 +255,3 @@ const deleteBrand = async (req, res) => {
 };
 
 
-export { createBrand, getAllBrands, getBrandById, updateBrand, deleteBrand };

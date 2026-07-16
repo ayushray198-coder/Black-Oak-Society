@@ -14,7 +14,7 @@ import validateObjectId from "../middlewares/validateObjectId.middleware.js";
 const router = express.Router();
 
 // Create Brand  adminMiddleware yee add krna hai midlle me 
-router.post("/", authMiddleware, createBrand);
+router.post("/", authMiddleware, adminMiddleware, createBrand);
 
 
 // Get All Brands
@@ -24,9 +24,9 @@ router.get("/", getAllBrands);
 router.get("/:id", validateObjectId, getBrandById,);
 
 // Update Brand
-router.patch("/:id", authMiddleware, validateObjectId, updateBrand);
+router.patch("/:id", authMiddleware, adminMiddleware, validateObjectId, updateBrand);
 
 // Delete Brand
-router.delete("/:id", authMiddleware, validateObjectId, deleteBrand);
+router.delete("/:id", authMiddleware, adminMiddleware, validateObjectId, deleteBrand);
 
 export default router;
