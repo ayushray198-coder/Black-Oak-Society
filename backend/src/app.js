@@ -17,9 +17,17 @@ import paymentRoutes from "../routes/payment.routes.js";
 
 const app = express();
 
-// Middlewares
+// Security
 app.use(helmet());
-app.use(cors());
+
+// ✅ CORS Configuration
+app.use(
+    cors({
+        origin: "http://localhost:5173",
+        credentials: true,
+    })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
