@@ -7,45 +7,50 @@ function HeroContent({
 
     return (
         <div
-            className={`w-full max-w-xl ${
+            className={`w-full max-w-[620px] ${
                 isCenter ? "mx-auto text-center" : "text-left"
             }`}
         >
-            {/* Premium Collection */}
+            {/* Eyebrow */}
 
             <p
                 className="
-                    mb-5
+                    mb-6
                     text-xs
                     font-semibold
                     uppercase
-                    tracking-[0.45em]
+                    tracking-[0.38em]
                     text-[#C89B3C]
                     sm:text-sm
                 "
             >
-                Premium Whisky Collection
+                Rare Craft. Timeless Legacy.
             </p>
 
             {/* Heading */}
 
             <h1
                 className="
+                    font-serif
                     font-bold
+                    uppercase
                     leading-[0.9]
-                    text-4xl
-                    sm:text-5xl
-                    md:text-6xl
-                    lg:text-7xl
-                    xl:text-8xl
+                    text-5xl
+
+                    sm:text-6xl
+
+                    md:text-7xl
+
+                    lg:text-[82px]
+
+                    xl:text-[92px]
                 "
             >
-                Crafted
+                Experience
                 <br />
-                for the
-                <br />
+
                 <span className="text-[#C89B3C]">
-                    Extraordinary.
+                    True Luxury
                 </span>
             </h1>
 
@@ -55,21 +60,16 @@ function HeroContent({
                 <p
                     className={`
                         mt-8
-                        max-w-lg
-                        text-sm
-                        leading-7
+                        max-w-[480px]
+                        text-[16px]
+                        leading-8
                         text-gray-300
-
-                        sm:text-base
-                        sm:leading-8
 
                         ${isCenter ? "mx-auto" : ""}
                     `}
                 >
-                    Experience timeless luxury with handcrafted premium
-                    spirits. Every bottle is designed for those who
-                    appreciate elegance, refinement and unforgettable
-                    taste.
+                    Discover the world's finest luxury spirits,
+                    curated for those who appreciate perfection.
                 </p>
             )}
 
@@ -94,9 +94,9 @@ function HeroContent({
                 >
                     <button
                         className="
-                            rounded-full
+                            rounded-xl
                             bg-[#C89B3C]
-                            px-9
+                            px-10
                             py-4
                             font-semibold
                             text-black
@@ -111,11 +111,12 @@ function HeroContent({
 
                     <button
                         className="
-                            rounded-full
+                            rounded-xl
                             border
                             border-[#C89B3C]
-                            px-9
+                            px-10
                             py-4
+                            text-white
                             transition-all
                             duration-300
                             hover:bg-[#C89B3C]

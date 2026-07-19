@@ -3,11 +3,11 @@ import HeroContent from "./HeroContent";
 
 function HeroDesktop() {
     return (
-        <div className="mx-auto flex min-h-screen w-full max-w-[1700px] items-center justify-between px-16 xl:px-24 2xl:px-32">
+        <div className="mx-auto flex h-[88vh] w-full max-w-[1700px] items-center justify-between px-16 pt-16 xl:px-24 2xl:px-32">
 
             {/* ================= Left Content ================= */}
 
-            <div className="flex flex-1 justify-start">
+            <div className="flex flex-1 items-center justify-start">
                 <HeroContent align="left" />
             </div>
 
