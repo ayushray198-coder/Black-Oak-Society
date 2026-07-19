@@ -1,63 +1,76 @@
 import Brand from "../models/brand.model.js";
 
 export const createBrand = async (req, res) => {
-  try {
-    const {
-      name,
-      slug,
-      description,
-      logo,
-      banner,
-      country,
-      website,
-    } = req.body;
+    try {
+        const {
+            name,
+            slug,
+            description,
+            logo,
+            banner,
+            categoryLine,
+            tagline,
+            brandColor,
+            country,
+            website,
+        } = req.body;
 
-    // Validation
-    if (!name || !slug || !description || !country) {
-      return res.status(400).json({
-        success: false,
-        message: "All required fields must be provided.",
-      });
+        // Validation
+        if (
+            !name ||
+            !slug ||
+            !description ||
+            !categoryLine ||
+            !tagline ||
+            !country
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "All required fields must be provided.",
+            });
+        }
+
+        // Check Existing Brand
+        const existingBrand = await Brand.findOne({
+            $or: [{ name }, { slug }],
+        });
+
+        if (existingBrand) {
+            return res.status(409).json({
+                success: false,
+                message: "Brand already exists.",
+            });
+        }
+
+        // Create Brand
+        const brand = await Brand.create({
+            name,
+            slug,
+            description,
+            logo,
+            banner,
+            categoryLine,
+            tagline,
+            brandColor,
+            country,
+            website,
+            createdBy: req.user._id,
+        });
+
+        return res.status(201).json({
+            success: true,
+            message: "Brand created successfully.",
+            brand,
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+        });
     }
-
-    // Check Existing Brand
-    const existingBrand = await Brand.findOne({
-      $or: [{ name }, { slug }],
-    });
-
-    if (existingBrand) {
-      return res.status(409).json({
-        success: false,
-        message: "Brand already exists.",
-      });
-    }
-
-    // Create Brand
-    const brand = await Brand.create({
-      name,
-      slug,
-      description,
-      logo,
-      banner,
-      country,
-      website,
-      createdBy: req.user._id,
-    });
-
-    return res.status(201).json({
-      success: true,
-      message: "Brand created successfully.",
-      brand,
-    });
-
-  } catch (error) {
-    console.error(error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-    });
-  }
 };
 
 

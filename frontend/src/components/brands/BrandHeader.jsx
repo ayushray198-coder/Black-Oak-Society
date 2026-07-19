@@ -1,81 +1,44 @@
 function BrandHeader() {
     return (
-        <div
-            className="
-                mx-auto
-                mb-16
-                max-w-4xl
-                text-center
-            "
-        >
-            {/* Small Label */}
+        <div className="mx-auto mb-20 max-w-5xl text-center">
 
-            <span
-                className="
-                    inline-flex
-                    items-center
-                    gap-3
+            {/* Top Label */}
 
-                    text-xs
-                    font-semibold
-                    uppercase
-                    tracking-[0.45em]
+            <div className="flex items-center justify-center gap-5">
 
-                    text-[#C89B3C]
-                "
-            >
-                <span className="h-px w-10 bg-[#C89B3C]/60" />
+                <span className="h-px w-16 bg-gradient-to-r from-transparent to-[#C89B3C]" />
 
-                Signature Brands
+                <span className="text-xs font-semibold uppercase tracking-[0.55em] text-[#C89B3C]">
+                    Signature Brands
+                </span>
 
-                <span className="h-px w-10 bg-[#C89B3C]/60" />
-            </span>
+                <span className="h-px w-16 bg-gradient-to-l from-transparent to-[#C89B3C]" />
+
+            </div>
 
             {/* Heading */}
 
-            <h2
-                className="
-                    mt-6
+            <h2 className="mt-8 font-serif text-5xl font-semibold leading-tight text-white md:text-6xl xl:text-7xl">
 
-                    font-serif
-                    font-semibold
-                    leading-tight
-                    text-white
-
-                    text-4xl
-
-                    sm:text-5xl
-
-                    lg:text-6xl
-                "
-            >
                 Discover the Finest
-                <span className="block text-[#C89B3C]">
+
+                <span className="mt-3 block bg-gradient-to-r from-[#F7E7B4] via-[#D8AE52] to-[#B8860B] bg-clip-text text-transparent">
                     Luxury Collections
                 </span>
+
             </h2>
 
             {/* Description */}
 
-            <p
-                className="
-                    mx-auto
-                    mt-8
-                    max-w-2xl
+            <p className="mx-auto mt-8 max-w-3xl text-lg leading-9 text-zinc-400">
 
-                    text-base
-                    leading-8
+                Experience an exclusive collection of the world's most iconic
+                luxury whisky houses. Every brand represents exceptional
+                craftsmanship, timeless heritage and unmatched quality,
+                carefully curated for the Black Oak Society.
 
-                    text-zinc-400
-
-                    sm:text-lg
-                "
-            >
-                Explore a carefully curated selection of globally celebrated
-                brands, crafted with exceptional heritage, timeless quality,
-                and uncompromising excellence. Every bottle reflects the
-                luxury and sophistication that define Black Oak Society.
             </p>
+
         </div>
     );
 }

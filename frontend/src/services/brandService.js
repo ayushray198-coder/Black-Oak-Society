@@ -22,8 +22,8 @@ export async function getAllBrands(params = {}) {
     return response.data;
 }
 
-export async function getBrandBySlug(slug) {
-    const response = await api.get(`/brands/${slug}`);
+export async function getBrandById(id) {
+    const response = await api.get(`/brands/${id}`);
 
     return response.data;
 }

@@ -4,28 +4,30 @@ import { getAllBrands } from "../services/brandService";
 function useBrands() {
     const [brands, setBrands] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState("");
 
     useEffect(() => {
         let isMounted = true;
 
-        const fetchBrands = async () => {
+        async function fetchBrands() {
             try {
                 setLoading(true);
-                setError(null);
+                setError("");
 
-                const response = await getAllBrands();
+                const response = await getAllBrands({
+                    page: 1,
+                    limit: 6,
+                    sort: "-createdAt",
+                });
 
                 if (!isMounted) return;
 
-                // 👇 Backend response ke hisaab se is line ko baad me adjust karenge
-                setBrands(response?.data || []);
+                setBrands(response.data || []);
             } catch (err) {
                 if (!isMounted) return;
 
                 setError(
                     err?.response?.data?.message ||
-                    err?.message ||
                     "Failed to load brands."
                 );
             } finally {
@@ -33,7 +35,7 @@ function useBrands() {
                     setLoading(false);
                 }
             }
-        };
+        }
 
         fetchBrands();
 

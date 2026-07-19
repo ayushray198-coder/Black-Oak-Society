@@ -1,78 +1,41 @@
 function BrandSkeleton() {
     return (
-        <article
-            className="
-                overflow-hidden
-                rounded-3xl
+        <article className="relative h-[430px] overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.03] animate-pulse">
 
-                border
-                border-white/10
+            {/* Banner */}
 
-                bg-white/[0.03]
-                backdrop-blur-xl
+            <div className="absolute inset-0 bg-gradient-to-b from-zinc-800 via-zinc-900 to-black" />
 
-                animate-pulse
-            "
-        >
-            <div className="p-8">
+            <div className="relative z-10 flex h-full flex-col justify-between px-7 py-8">
+
+                {/* Featured Badge */}
+
+                <div className="h-8 w-24 rounded-full bg-[#C89B3C]/20" />
 
                 {/* Logo */}
 
-                <div
-                    className="
-                        h-24
-                        rounded-2xl
+                <div className="flex flex-1 items-center justify-center">
+                    <div className="h-28 w-40 rounded-2xl bg-white/10" />
+                </div>
 
-                        bg-white/5
-                    "
-                />
+                {/* Content */}
 
-                {/* Title */}
+                <div>
 
-                <div
-                    className="
-                        mt-8
+                    <div className="mx-auto h-8 w-2/3 rounded-full bg-white/10" />
 
-                        h-7
-                        w-2/3
+                    <div className="mx-auto mt-5 h-4 w-full rounded-full bg-white/10" />
 
-                        rounded-full
+                    <div className="mx-auto mt-3 h-4 w-5/6 rounded-full bg-white/10" />
 
-                        bg-white/5
-                    "
-                />
+                    <div className="my-6 h-px w-full bg-white/10" />
 
-                {/* Subtitle */}
+                    <div className="mx-auto h-12 w-52 rounded-xl border border-[#C89B3C]/20 bg-[#C89B3C]/10" />
 
-                <div
-                    className="
-                        mt-4
-
-                        h-4
-                        w-1/2
-
-                        rounded-full
-
-                        bg-white/5
-                    "
-                />
-
-                {/* Button */}
-
-                <div
-                    className="
-                        mt-8
-
-                        h-5
-                        w-32
-
-                        rounded-full
-
-                        bg-[#C89B3C]/20
-                    "
-                />
+                </div>
 
             </div>
+
         </article>
     );
 }
