@@ -17,7 +17,7 @@ function useBrands() {
                 const response = await getAllBrands({
                     page: 1,
                     limit: 6,
-                    sort: "-createdAt",
+                    
                 });
 
                 if (!isMounted) return;

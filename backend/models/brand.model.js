@@ -63,6 +63,21 @@ const brandSchema = new mongoose.Schema(
             trim: true,
         },
 
+        foundedYear: {
+            type: Number,
+        },
+
+        displayOrder: {
+            type: Number,
+            default: 999,
+            min: 1,
+        },
+
+        isFeatured: {
+            type: Boolean,
+            default: false,
+        },
+
         isActive: {
             type: Boolean,
             default: true,
