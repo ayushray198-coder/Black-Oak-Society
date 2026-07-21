@@ -1,12 +1,15 @@
+import { forwardRef } from "react";
+
 import heroBg from "../../assets/images/hero-bg.png";
 
 import HeroDesktop from "./HeroDesktop";
 import HeroTablet from "./HeroTablet";
 import HeroMobile from "./HeroMobile";
 
-function Hero() {
+const Hero = forwardRef((props, ref) => {
     return (
         <section
+            ref={ref}
             className="relative min-h-screen overflow-hidden text-white"
             style={{
                 backgroundImage: `url(${heroBg})`,
@@ -39,10 +42,10 @@ function Hero() {
             {/* Bottom Dark Fade */}
             <div className="pointer-events-none absolute bottom-0 left-0 z-10 h-56 w-full bg-gradient-to-b from-transparent via-black/30 to-[#050505]" />
 
-            {/* Soft Golden Ambient Glow */}
+            {/* Golden Ambient */}
             <div className="pointer-events-none absolute bottom-0 left-1/2 z-10 h-36 w-[650px] -translate-x-1/2 rounded-full bg-[#C89B3C]/8 blur-[130px]" />
 
-            {/* Premium Inner Shadow */}
+            {/* Premium Shadow */}
             <div
                 className="pointer-events-none absolute bottom-0 left-0 z-10 h-40 w-full"
                 style={{
@@ -51,7 +54,7 @@ function Hero() {
                 }}
             />
 
-            {/* Very Subtle Golden Highlight */}
+            {/* Golden Highlight */}
             <div
                 className="pointer-events-none absolute bottom-0 left-1/2 z-10 h-20 w-[900px] -translate-x-1/2"
                 style={{
@@ -62,6 +65,8 @@ function Hero() {
             />
         </section>
     );
-}
+});
+
+Hero.displayName = "Hero";
 
 export default Hero;
