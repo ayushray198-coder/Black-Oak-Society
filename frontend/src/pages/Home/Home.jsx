@@ -4,6 +4,7 @@ import { FeaturedCollection } from "../../components/featuredCollection";
 import StorySection from "../../components/story/StorySection";
 import EditorialSection from "../../components/editorial/EditorialSection";
 import SignatureSection from "../../components/signature/SignatureSection";
+import MemberExperienceSection from "../../components/MemberExperience/MemberExperienceSection";
 
 const Home = () => {
     return (
@@ -14,6 +15,7 @@ const Home = () => {
              <StorySection />
              <EditorialSection />
              <SignatureSection />
+             <MemberExperienceSection />
         </>
     );
 };
