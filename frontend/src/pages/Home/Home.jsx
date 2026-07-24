@@ -5,6 +5,7 @@ import StorySection from "../../components/story/StorySection";
 import EditorialSection from "../../components/editorial/EditorialSection";
 import SignatureSection from "../../components/signature/SignatureSection";
 import MemberExperienceSection from "../../components/MemberExperience/MemberExperienceSection";
+import NewsletterSection from "../../components/Newsletter/NewsletterSection";
 
 const Home = () => {
     return (
@@ -16,6 +17,7 @@ const Home = () => {
              <EditorialSection />
              <SignatureSection />
              <MemberExperienceSection />
+             <NewsletterSection />
         </>
     );
 };
