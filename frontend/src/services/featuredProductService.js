@@ -1,8 +1,10 @@
 import api from "../lib/api";
 
-export const getFeaturedProducts = async (params = {}) => {
+export const getFeaturedProducts = async () => {
     const response = await api.get("/products", {
-        params,
+        params: {
+            featured: true,
+        },
     });
 
     return response.data;

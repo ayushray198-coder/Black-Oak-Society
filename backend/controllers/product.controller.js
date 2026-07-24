@@ -6,170 +6,186 @@ import slugify from "slugify";
 
 
 export const createProduct = async (req, res) => {
-    try {
-        const {
-            name,
-            description,
-            brand,
-            category,
-            price,
-            comparePrice,
-            stock,
-            sku,
-            images,
-            featured,
-            status,
-        } = req.body;
-
-        // Required Fields
-        if (
-            !name ||
-            !description ||
-            !brand ||
-            !category ||
-            !price ||
-            !stock ||
-            !sku
-        ) {
-            return res.status(400).json({
-                success: false,
-                message: "All required fields must be provided.",
-            });
-        }
-
-        // Check Brand
-        const brandExists = await Brand.findById(brand);
-
-        if (!brandExists) {
-            return res.status(404).json({
-                success: false,
-                message: "Brand not found.",
-            });
-        }
-
-        // Check Category
-        const categoryExists = await Category.findById(category);
-
-        if (!categoryExists) {
-            return res.status(404).json({
-                success: false,
-                message: "Category not found.",
-            });
-        }
-
-        // Duplicate SKU
-        const skuExists = await Product.findOne({ sku });
-
-        if (skuExists) {
-            return res.status(400).json({
-                success: false,
-                message: "SKU already exists.",
-            });
-        }
-
-        // Create Product
-        const product = await Product.create({
-            name,
-            slug: slugify(name, { lower: true }),
-            description,
-            brand,
-            category,
-            price,
-            comparePrice,
-            stock,
-            sku,
-            images,
-            featured,
-            status,
-        });
-
-        return res.status(201).json({
-            success: true,
-            message: "Product created successfully.",
-            data: product,
-        });
-    } catch (error) {
-        console.log(error);
-
-        return res.status(500).json({
-            success: false,
-            message: "Internal Server Error",
-        });
-    }
-};
-
-
-
-export const getAllProducts = async (req, res) => {
   try {
     const {
-      search,
+      name,
+      description,
       brand,
       category,
-      page = 1,
-      limit = 10,
-      sort = "-createdAt",
-    } = req.query;
+      price,
+      comparePrice,
+      stock,
+      sku,
+      images,
+      featured,
+      isSignature,
+      status,
+    } = req.body;
 
-    const query = {};
-
-    // Search
-    if (search) {
-      query.name = {
-        $regex: search,
-        $options: "i",
-      };
+    // Required Fields
+    if (
+      !name ||
+      !description ||
+      !brand ||
+      !category ||
+      !price ||
+      !stock ||
+      !sku
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "All required fields must be provided.",
+      });
     }
 
-    // Brand Filter
-    if (brand) {
-      query.brand = brand;
+    // Check Brand
+    const brandExists = await Brand.findById(brand);
+
+    if (!brandExists) {
+      return res.status(404).json({
+        success: false,
+        message: "Brand not found.",
+      });
     }
 
-    // Category Filter
-    if (category) {
-      query.category = category;
+    // Check Category
+    const categoryExists = await Category.findById(category);
+
+    if (!categoryExists) {
+      return res.status(404).json({
+        success: false,
+        message: "Category not found.",
+      });
     }
 
-    // Active Products Only
-    query.status = "active";
+    // Duplicate SKU
+    const skuExists = await Product.findOne({ sku });
 
-    const currentPage = Number(page);
-    const perPage = Number(limit);
+    if (skuExists) {
+      return res.status(400).json({
+        success: false,
+        message: "SKU already exists.",
+      });
+    }
 
-    const totalProducts = await Product.countDocuments(query);
-
-    const products = await Product.find(query)
-      .populate("brand", "name")
-      .populate("category", "name")
-      .sort(sort)
-      .skip((currentPage - 1) * perPage)
-      .limit(perPage);
-
-    return res.status(200).json({
-      success: true,
-      message: "Products fetched successfully.",
-
-      pagination: {
-        totalProducts,
-        currentPage,
-        totalPages: Math.ceil(
-          totalProducts / perPage
-        ),
-        perPage,
-      },
-
-      data: products,
+    // Create Product
+    const product = await Product.create({
+      name,
+      slug: slugify(name, { lower: true }),
+      description,
+      brand,
+      category,
+      price,
+      comparePrice,
+      stock,
+      sku,
+      images,
+      featured,
+      status,
     });
 
+    return res.status(201).json({
+      success: true,
+      message: "Product created successfully.",
+      data: product,
+    });
   } catch (error) {
-    console.error(error);
+    console.log(error);
 
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",
     });
   }
+};
+
+
+
+export const getAllProducts = async (req, res) => {
+    try {
+        const {
+            search,
+            brand,
+            category,
+            featured,
+            signature,
+            page = 1,
+            limit = 10,
+            sort = "-createdAt",
+        } = req.query;
+
+        const query = {
+            status: "active",
+        };
+
+        // Search
+        if (search) {
+            query.name = {
+                $regex: search,
+                $options: "i",
+            };
+        }
+
+        // Brand Filter
+        if (brand) {
+            query.brand = brand;
+        }
+
+        // Category Filter
+        if (category) {
+            query.category = category;
+        }
+
+        // Featured Filter
+        if (featured === "true") {
+            query.featured = true;
+        }
+
+        if (featured === "false") {
+            query.featured = false;
+        }
+
+        // Signature Filter
+        if (signature === "true") {
+            query.isSignature = true;
+        }
+
+        if (signature === "false") {
+            query.isSignature = false;
+        }
+
+        const currentPage = Number(page);
+        const perPage = Number(limit);
+
+        const totalProducts = await Product.countDocuments(query);
+
+        const products = await Product.find(query)
+            .populate("brand", "name")
+            .populate("category", "name")
+            .sort(sort)
+            .skip((currentPage - 1) * perPage)
+            .limit(perPage);
+
+        return res.status(200).json({
+            success: true,
+            message: "Products fetched successfully.",
+            pagination: {
+                totalProducts,
+                currentPage,
+                totalPages: Math.ceil(totalProducts / perPage),
+                perPage,
+            },
+            data: products,
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+        });
+    }
 };
 
 

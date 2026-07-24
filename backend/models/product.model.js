@@ -74,7 +74,14 @@ const productSchema = new mongoose.Schema(
       },
     ],
 
+    // Featured Collection
     featured: {
+      type: Boolean,
+      default: false,
+    },
+
+    // Signature Collection
+    isSignature: {
       type: Boolean,
       default: false,
     },

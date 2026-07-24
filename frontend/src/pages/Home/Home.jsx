@@ -3,6 +3,7 @@ import Brands from "../../components/brands/Brands";
 import { FeaturedCollection } from "../../components/featuredCollection";
 import StorySection from "../../components/story/StorySection";
 import EditorialSection from "../../components/editorial/EditorialSection";
+import SignatureSection from "../../components/signature/SignatureSection";
 
 const Home = () => {
     return (
@@ -12,6 +13,7 @@ const Home = () => {
             <FeaturedCollection />
              <StorySection />
              <EditorialSection />
+             <SignatureSection />
         </>
     );
 };
