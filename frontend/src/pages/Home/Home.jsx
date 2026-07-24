@@ -6,6 +6,7 @@ import EditorialSection from "../../components/editorial/EditorialSection";
 import SignatureSection from "../../components/signature/SignatureSection";
 import MemberExperienceSection from "../../components/MemberExperience/MemberExperienceSection";
 import NewsletterSection from "../../components/Newsletter/NewsletterSection";
+import FooterSection from "../../components/Footer/FooterSection";
 
 const Home = () => {
     return (
@@ -13,11 +14,13 @@ const Home = () => {
             <Hero />
             <Brands />
             <FeaturedCollection />
-             <StorySection />
-             <EditorialSection />
-             <SignatureSection />
-             <MemberExperienceSection />
-             <NewsletterSection />
+            <StorySection />
+            <EditorialSection />
+            <SignatureSection />
+            <MemberExperienceSection />
+            <NewsletterSection />
+
+            <FooterSection />
         </>
     );
 };
