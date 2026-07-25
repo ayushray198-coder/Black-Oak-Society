@@ -1,6 +1,6 @@
 import api from "../lib/api";
 
-export async function getAllBrands(params = {}) {
+export const getProducts = async (params = {}, config = {}) => {
     const cleanParams = Object.fromEntries(
         Object.entries(params).filter(
             ([, value]) =>
@@ -10,15 +10,16 @@ export async function getAllBrands(params = {}) {
         )
     );
 
-    const response = await api.get("/brands", {
+    const response = await api.get("/products", {
         params: cleanParams,
+        ...config,
     });
 
     return response.data;
-}
+};
 
-export async function getBrandById(id) {
-    const response = await api.get(`/brands/${id}`);
+export const getProductById = async (productId) => {
+    const response = await api.get(`/products/${productId}`);
 
     return response.data;
-}
+};

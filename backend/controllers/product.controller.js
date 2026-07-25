@@ -2,6 +2,7 @@ import Product from "../models/product.model.js";
 import Brand from "../models/brand.model.js";
 import Category from "../models/category.model.js";
 import slugify from "slugify";
+import mongoose from "mongoose";
 
 
 
@@ -111,7 +112,7 @@ export const getAllProducts = async (req, res) => {
             signature,
             page = 1,
             limit = 10,
-            sort = "-createdAt",
+            sort,
         } = req.query;
 
         const query = {
@@ -119,50 +120,52 @@ export const getAllProducts = async (req, res) => {
         };
 
         // Search
-        if (search) {
+        if (search?.trim()) {
             query.name = {
-                $regex: search,
+                $regex: search.trim(),
                 $options: "i",
             };
         }
 
         // Brand Filter
-        if (brand) {
+        if (brand?.trim()) {
             query.brand = brand;
         }
 
         // Category Filter
-        if (category) {
+        if (category?.trim()) {
             query.category = category;
         }
 
         // Featured Filter
         if (featured === "true") {
             query.featured = true;
-        }
-
-        if (featured === "false") {
+        } else if (featured === "false") {
             query.featured = false;
         }
 
         // Signature Filter
         if (signature === "true") {
             query.isSignature = true;
-        }
-
-        if (signature === "false") {
+        } else if (signature === "false") {
             query.isSignature = false;
         }
 
-        const currentPage = Number(page);
-        const perPage = Number(limit);
+        const currentPage = Number(page) || 1;
+        const perPage = Number(limit) || 10;
+
+        // Safe Sort
+        const sortValue =
+            sort && sort.trim() !== ""
+                ? sort
+                : "-createdAt";
 
         const totalProducts = await Product.countDocuments(query);
 
         const products = await Product.find(query)
             .populate("brand", "name")
             .populate("category", "name")
-            .sort(sort)
+            .sort(sortValue)
             .skip((currentPage - 1) * perPage)
             .limit(perPage);
 
@@ -177,47 +180,57 @@ export const getAllProducts = async (req, res) => {
             },
             data: products,
         });
-
     } catch (error) {
+        console.error("GET PRODUCTS ERROR:");
         console.error(error);
 
         return res.status(500).json({
             success: false,
-            message: "Internal Server Error",
+            message: error.message || "Internal Server Error",
         });
     }
 };
 
 
 
+
 export const getProductById = async (req, res) => {
-  try {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    const product = await Product.findById(id)
-      .populate("brand", "name")
-      .populate("category", "name");
+        // Validate ObjectId
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid product ID.",
+            });
+        }
 
-    if (!product) {
-      return res.status(404).json({
-        success: false,
-        message: "Product not found.",
-      });
+        const product = await Product.findById(id)
+            .populate("brand", "name")
+            .populate("category", "name");
+
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found.",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Product fetched successfully.",
+            data: product,
+        });
+    } catch (error) {
+        console.error("GET PRODUCT BY ID ERROR:");
+        console.error(error);
+
+        return res.status(500).json({
+            success: false,
+            message: error.message || "Internal Server Error",
+        });
     }
-
-    return res.status(200).json({
-      success: true,
-      message: "Product fetched successfully.",
-      data: product,
-    });
-  } catch (error) {
-    console.error("Get Product By ID Error:", error);
-
-    return res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-    });
-  }
 };
 
 
