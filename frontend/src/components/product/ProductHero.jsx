@@ -5,6 +5,7 @@ import {
     Plus,
     Share2,
     ShoppingBag,
+    Star,
 } from "lucide-react";
 
 function ProductHero({ product }) {
@@ -18,6 +19,29 @@ function ProductHero({ product }) {
         images = [],
     } = product || {};
 
+
+
+    const data = [
+        {
+            icon: "✓",
+            title: "Authentic Product",
+            description:
+                "100% genuine bottles sourced exclusively from trusted distributors.",
+        },
+        {
+            icon: "🔒",
+            title: "Secure Checkout",
+            description:
+                "Protected payments with encrypted transactions and buyer security.",
+        },
+        {
+            icon: "📦",
+            title: "Luxury Packaging",
+            description:
+                "Premium presentation with extra protection for every shipment.",
+        },
+    ]
+
     const [selectedImage, setSelectedImage] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [wishlisted, setWishlisted] = useState(false);
@@ -27,21 +51,22 @@ function ProductHero({ product }) {
             ? images
             : [
                 {
-                    url: "https://placehold.co/800x1000/0B0B0B/C8A04D?text=Black+Oak",
+                    url: "https://placehold.co/900x1100/0B0B0B/C8A04D?text=Black+Oak",
                 },
             ];
 
     const currentImage = gallery[selectedImage]?.url;
 
     return (
-        <section className="relative overflow-hidden pt-36 pb-20 lg:pt-40">
+        <section className="relative overflow-hidden pt-36 pb-24">
+
             {/* Background */}
 
             <div className="absolute inset-0 bg-[#050505]" />
 
-            <div className="absolute left-1/2 top-0 h-[450px] w-[450px] -translate-x-1/2 rounded-full bg-[#C8A04D]/10 blur-[180px]" />
+            <div className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-[#C8A04D]/10 blur-[180px]" />
 
-            <div className="relative mx-auto grid max-w-7xl gap-20 px-5 lg:grid-cols-2">
+            <div className="relative mx-auto grid max-w-7xl items-center gap-16 px-5 lg:grid-cols-[1.05fr_.95fr]">
 
                 {/* LEFT */}
 
@@ -53,60 +78,64 @@ function ProductHero({ product }) {
                         className="
                             relative
                             overflow-hidden
-                            rounded-[36px]
+                            rounded-[34px]
                             border
                             border-[#222]
-                            bg-[#0A0A0A]
-                            p-8
+                            bg-[#090909]
+                            p-10
                         "
                     >
+
                         <img
                             src={currentImage}
                             alt={name}
                             className="
                                 mx-auto
-                                h-[520px]
+                                h-[620px]
                                 w-auto
                                 object-contain
                                 transition-all
-                                duration-500
+                                duration-700
                             "
                         />
+
                     </div>
 
                     {/* Gallery */}
 
-                    <div className="mt-6 flex gap-4 overflow-x-auto">
+                    <div className="mt-6 flex justify-center gap-4">
 
                         {gallery.map((image, index) => (
+
                             <button
                                 key={index}
-                                onClick={() =>
-                                    setSelectedImage(index)
-                                }
+                                onClick={() => setSelectedImage(index)}
                                 className={`
                                     overflow-hidden
                                     rounded-2xl
                                     border
                                     transition-all
+                                    duration-300
                                     ${selectedImage === index
-                                        ? "border-[#C8A04D]"
+                                        ? "border-[#C8A04D] shadow-[0_0_30px_rgba(200,160,77,.25)]"
                                         : "border-[#222]"
                                     }
                                 `}
                             >
+
                                 <img
                                     src={image.url}
                                     alt={name}
                                     className="
                                         h-24
                                         w-20
-                                        object-contain
-                                        bg-[#0A0A0A]
-                                        p-2
+                                        object-cover
+                                        bg-[#0B0B0B]
                                     "
                                 />
+
                             </button>
+
                         ))}
 
                     </div>
@@ -119,56 +148,69 @@ function ProductHero({ product }) {
 
                     {/* Brand */}
 
-                    <span
-                        className="
-            text-xs
-            uppercase
-            tracking-[0.45em]
-            text-[#C8A04D]
-        "
-                    >
+                    <span className="text-xs font-medium uppercase tracking-[0.45em] text-[#C8A04D]">
                         {brand?.name}
                     </span>
 
                     {/* Product Name */}
 
-                    <h3
-                        className="
-            mt-5
-            text-4xl
-            font-bold
-            leading-tight
-            text-white
-            lg:text-6xl
-        "
-                    >
+                    <h2 className="mt-5 text-3xl font-bold leading-[1.1] text-white lg:text-7xl">
                         {name}
-                    </h3>
+                    </h2>
+
+                    {/* Tagline */}
+
+                    <p className="mt-5 text-sm uppercase tracking-[0.35em] text-[#C8A04D]/80">
+                        Crafted for the Extraordinary
+                    </p>
+
+                    {/* Short Description */}
+
+                    <p className="mt-8 max-w-xl text-lg leading-9 text-neutral-400 line-clamp-4">
+                        {description}
+                    </p>
+
+                    {/* Rating */}
+
+                    <div className="mt-8 flex items-center gap-4">
+
+                        <div className="flex items-center gap-1">
+
+                            {[...Array(5)].map((_, index) => (
+                                <Star
+                                    key={index}
+                                    size={18}
+                                    fill="#C8A04D"
+                                    className="text-[#C8A04D]"
+                                />
+                            ))}
+
+                        </div>
+
+                        <span className="text-sm text-neutral-400">
+                            (128 Reviews)
+                        </span>
+
+                    </div>
 
                     {/* Price */}
 
-                    <div className="mt-10 flex flex-wrap items-center gap-5">
+                    <div className="mt-8 flex flex-wrap items-center gap-5">
 
-                        <span
-                            className="
-                text-4xl
-                font-bold
-                text-[#C8A04D]
-            "
-                        >
+                        <span className="text-5xl font-bold text-[#D8B46A]">
                             ₹{price?.toLocaleString()}
                         </span>
 
                         {!!comparePrice && comparePrice > price && (
-                            <span
-                                className="
-                    text-2xl
-                    text-neutral-500
-                    line-through
-                "
-                            >
-                                ₹{comparePrice.toLocaleString()}
-                            </span>
+                            <>
+                                <span className="text-2xl text-neutral-500 line-through">
+                                    ₹{comparePrice.toLocaleString()}
+                                </span>
+
+                                <span className="rounded-full border border-[#C8A04D]/20 bg-[#C8A04D]/10 px-4 py-2 text-sm font-medium text-[#D8B46A]">
+                                    Save ₹{(comparePrice - price).toLocaleString()}
+                                </span>
+                            </>
                         )}
 
                     </div>
@@ -178,44 +220,12 @@ function ProductHero({ product }) {
                     <div className="mt-8">
 
                         {stock > 0 ? (
-                            <span
-                                className="
-                    inline-flex
-                    items-center
-                    rounded-full
-                    border
-                    border-emerald-500/30
-                    bg-emerald-500/10
-                    px-5
-                    py-2.5
-                    text-sm
-                    font-medium
-                    uppercase
-                    tracking-[0.2em]
-                    text-emerald-400
-                "
-                            >
-                                In Stock
+                            <span className="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-5 py-2 text-sm uppercase tracking-[0.25em] text-emerald-400">
+                                ● In Stock
                             </span>
                         ) : (
-                            <span
-                                className="
-                    inline-flex
-                    items-center
-                    rounded-full
-                    border
-                    border-red-500/30
-                    bg-red-500/10
-                    px-5
-                    py-2.5
-                    text-sm
-                    font-medium
-                    uppercase
-                    tracking-[0.2em]
-                    text-red-400
-                "
-                            >
-                                Out Of Stock
+                            <span className="inline-flex items-center rounded-full border border-red-500/20 bg-red-500/10 px-5 py-2 text-sm uppercase tracking-[0.25em] text-red-400">
+                                ● Out Of Stock
                             </span>
                         )}
 
@@ -223,38 +233,26 @@ function ProductHero({ product }) {
 
                     {/* Divider */}
 
-                    <div className="my-10 h-px w-full bg-gradient-to-r from-transparent via-[#C8A04D]/30 to-transparent" />
+                    <div className="my-10 h-px w-full bg-gradient-to-r from-transparent via-[#C8A04D]/25 to-transparent" />
 
-                    {/* Quantity */}
+                    {/* CTA */}
 
-                    <div className="flex flex-wrap items-center gap-6">
+                    <div className="flex flex-wrap items-center gap-5">
 
-                        <div
-                            className="
-                flex
-                items-center
-                overflow-hidden
-                rounded-2xl
-                border
-                border-[#2A2A2A]
-                bg-[#0B0B0B]
-            "
-                        >
+                        {/* Quantity */}
+
+                        <div className="flex h-16 items-center overflow-hidden rounded-2xl border border-[#222] bg-[#0B0B0B]">
 
                             <button
                                 onClick={() =>
                                     setQuantity((prev) => Math.max(1, prev - 1))
                                 }
-                                className="
-                    p-5
-                    transition
-                    hover:bg-[#171717]
-                "
+                                className="px-6 transition hover:bg-[#171717]"
                             >
                                 <Minus size={18} />
                             </button>
 
-                            <span className="w-16 text-center text-xl font-semibold">
+                            <span className="w-16 text-center text-lg font-semibold">
                                 {quantity}
                             </span>
 
@@ -262,30 +260,27 @@ function ProductHero({ product }) {
                                 onClick={() =>
                                     setQuantity((prev) => prev + 1)
                                 }
-                                className="
-                    p-5
-                    transition
-                    hover:bg-[#171717]
-                "
+                                className="px-6 transition hover:bg-[#171717]"
                             >
                                 <Plus size={18} />
                             </button>
 
                         </div>
 
+                        {/* Add To Cart */}
+
                         <button
                             className="
                 flex-1
                 rounded-2xl
-                bg-[#C8A04D]
-                px-8
+                bg-[#D8B46A]
+                px-10
                 py-5
                 font-semibold
                 text-black
                 transition-all
                 duration-300
                 hover:scale-[1.02]
-                hover:bg-[#d5af5c]
             "
                         >
                             <span className="flex items-center justify-center gap-3">
@@ -296,185 +291,142 @@ function ProductHero({ product }) {
 
                     </div>
 
-                    {/* Action Buttons */}
+                    {/* Actions */}
 
                     <div className="mt-6 flex gap-4">
 
                         <button
-                            onClick={() => setWishlisted((prev) => !prev)}
-                            className="
-                flex
-                h-14
-                w-14
-                items-center
-                justify-center
-                rounded-2xl
-                border
-                border-[#2A2A2A]
-                bg-[#0B0B0B]
-                transition
-                hover:border-[#C8A04D]
-            "
+                            onClick={() => setWishlisted(!wishlisted)}
+                            className="flex h-14 w-14 items-center justify-center rounded-2xl border border-[#222] bg-[#0B0B0B] transition hover:border-[#D8B46A]"
                         >
                             <Heart
                                 size={20}
                                 className={
                                     wishlisted
-                                        ? "fill-[#C8A04D] text-[#C8A04D]"
+                                        ? "fill-[#D8B46A] text-[#D8B46A]"
                                         : ""
                                 }
                             />
                         </button>
 
                         <button
-                            className="
-                flex
-                h-14
-                w-14
-                items-center
-                justify-center
-                rounded-2xl
-                border
-                border-[#2A2A2A]
-                bg-[#0B0B0B]
-                transition
-                hover:border-[#C8A04D]
-            "
+                            className="flex h-14 items-center gap-3 rounded-2xl border border-[#222] bg-[#0B0B0B] px-6 transition hover:border-[#D8B46A]"
                         >
-                            <Share2 size={20} />
+                            <Share2 size={18} />
+                            Share Product
                         </button>
 
                     </div>
 
-                    {/* Description */}
-
-                    {/* <p
-                        className="
-            mt-10
-            max-w-2xl
-            text-lg
-            leading-9
-            text-neutral-400
-        "
-                    >
-                        {description}
-                    </p> */}
-
-
-                    {/* Feature Cards */}
-
-                    {/* <div className="mt-12 grid gap-5 sm:grid-cols-3">
-
-                        <div
-                            className="
-                rounded-3xl
-                border
-                border-[#222]
-                bg-[#0A0A0A]
-                p-6
-            "
-                        >
-                            <h3 className="text-sm font-semibold uppercase tracking-[0.25em] text-[#C8A04D]">
-                                Authentic
-                            </h3>
-
-                            <p className="mt-3 text-sm leading-7 text-neutral-400">
-                                Carefully curated premium collection sourced from trusted
-                                distributors.
-                            </p>
-                        </div>
-
-                        <div
-                            className="
-                rounded-3xl
-                border
-                border-[#222]
-                bg-[#0A0A0A]
-                p-6
-            "
-                        >
-                            <h3 className="text-sm font-semibold uppercase tracking-[0.25em] text-[#C8A04D]">
-                                Premium Care
-                            </h3>
-
-                            <p className="mt-3 text-sm leading-7 text-neutral-400">
-                                Luxury packaging with secure handling to preserve every bottle.
-                            </p>
-                        </div>
-
-                        <div
-                            className="
-                rounded-3xl
-                border
-                border-[#222]
-                bg-[#0A0A0A]
-                p-6
-            "
-                        >
-                            <h3 className="text-sm font-semibold uppercase tracking-[0.25em] text-[#C8A04D]">
-                                Secure Checkout
-                            </h3>
-
-                            <p className="mt-3 text-sm leading-7 text-neutral-400">
-                                Protected payment experience with fast and reliable order
-                                processing.
-                            </p>
-                        </div>
-
-                    </div> */}
-
-                    {/* Extra Details */}
-
-                    {/* <div
-                        className="
-            mt-12
-            rounded-[32px]
-            border
-            border-[#222]
-            bg-[#0A0A0A]
-            p-8
-        "
-                    >
-
-                        <div className="grid gap-8 md:grid-cols-3">
-
-                            <div>
-                                <span className="text-xs uppercase tracking-[0.35em] text-[#C8A04D]">
-                                    Brand
-                                </span>
-
-                                <h4 className="mt-3 text-xl font-semibold text-white">
-                                    {brand?.name || "-"}
-                                </h4>
-                            </div>
-
-                            <div>
-                                <span className="text-xs uppercase tracking-[0.35em] text-[#C8A04D]">
-                                    Availability
-                                </span>
-
-                                <h4 className="mt-3 text-xl font-semibold text-white">
-                                    {stock > 0 ? "Available" : "Unavailable"}
-                                </h4>
-                            </div>
-
-                            <div>
-                                <span className="text-xs uppercase tracking-[0.35em] text-[#C8A04D]">
-                                    Quantity
-                                </span>
-
-                                <h4 className="mt-3 text-xl font-semibold text-white">
-                                    {quantity}
-                                </h4>
-                            </div>
-
-                        </div>
-
-                    </div> */}
-
                 </div>
 
+                {/* Luxury Info Strip */}
+
+
             </div>
+            <div className="mt-24 mx-auto grid max-w-6xl gap-6 lg:grid-cols-3">
+
+                {data.map((item) => (
+                    <div
+                        key={item.title}
+                        className="
+                group
+                relative
+                flex
+                items-center
+                gap-5
+                overflow-hidden
+                rounded-[24px]
+                border
+                border-[#262626]
+                bg-[#0C0C0C]
+                px-6
+                py-5
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                hover:border-[#C8A04D]/35
+                hover:shadow-[0_12px_35px_rgba(200,160,77,.08)]
+            "
+                    >
+
+                        {/* Glow */}
+
+                        <div
+                            className="
+                    absolute
+                    -right-10
+                    -top-10
+                    h-28
+                    w-28
+                    rounded-full
+                    bg-[#C8A04D]/10
+                    blur-3xl
+                    opacity-0
+                    transition-all
+                    duration-500
+                    group-hover:opacity-100
+                "
+                        />
+
+                        {/* Icon */}
+
+                        <div
+                            className="
+                    flex
+                    h-14
+                    w-14
+                    shrink-0
+                    items-center
+                    justify-center
+                    rounded-2xl
+                    border
+                    border-[#C8A04D]/20
+                    bg-[#C8A04D]/10
+                    text-xl
+                "
+                        >
+                            {item.icon}
+                        </div>
+
+                        {/* Content */}
+
+                        <div className="min-w-0 flex-1">
+
+                            <h5
+                                className="
+                        truncate
+                        text-xl
+                        font-semibold
+                        text-white
+                    "
+                            >
+                                {item.title}
+                            </h5>
+
+                            <div className="mt-2 h-px w-10 bg-[#C8A04D]" />
+
+                            <p
+                                className="
+                        mt-3
+                        line-clamp-2
+                        text-sm
+                        leading-6
+                        text-neutral-400
+                    "
+                            >
+                                {item.description}
+                            </p>
+
+                        </div>
+
+                    </div>
+                ))}
+
+            </div>
+
+
+
 
         </section>
     );
