@@ -4,6 +4,7 @@ import ShopBanner from "../../components/shop/ShopBanner";
 import ShopToolbar from "../../components/shop/ShopToolbar";
 import ProductGrid from "../../components/shop/ProductGrid";
 import Pagination from "../../components/shop/Pagination";
+import FooterSection from "../../components/Footer/FooterSection"
 
 import useProducts from "../../hooks/useProducts";
 import useDebounce from "../../hooks/useDebounce";
@@ -92,6 +93,9 @@ function Shop() {
                 pagination={pagination}
                 onPageChange={changePage}
             />
+
+            <FooterSection />
+            
         </>
     );
 }

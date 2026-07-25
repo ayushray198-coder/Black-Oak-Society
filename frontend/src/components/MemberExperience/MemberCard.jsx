@@ -76,7 +76,7 @@ function MemberCard({ benefit }) {
                     px-3
                     mt-2
                     text-center
-                    text-[9px]
+                    text-[8px]
                     font-light
                     leading-4
                     tracking-[0.05em]

@@ -64,9 +64,10 @@ function SignatureCard({ product }) {
 
             <div className="relative z-10 px-6 pb-7 text-center">
 
-                <h3
+                <h4
                     className="
                         text-xl
+                        mt-2
                         md:text-[22px]
                         font-light
                         leading-snug
@@ -75,7 +76,7 @@ function SignatureCard({ product }) {
                     "
                 >
                     {name}
-                </h3>
+                </h4>
 
                 <div className="mx-auto mt-4 h-px w-12 bg-[#C89B3C]/40" />
 

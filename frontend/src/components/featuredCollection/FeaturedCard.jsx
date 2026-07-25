@@ -170,7 +170,7 @@ function FeaturedCard({ product }) {
 
                 {/* Product Name */}
 
-                <h3
+                <h4
                     className="
                         line-clamp-2
                         font-serif
@@ -185,7 +185,7 @@ function FeaturedCard({ product }) {
                     "
                 >
                     {name}
-                </h3>
+                </h4>
 
                 {/* Rating */}
 
