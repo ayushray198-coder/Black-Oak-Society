@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import MainLayout from "../layouts/MainLayout";
-import ProtectedRoute from "./ProtectedRoute";
 
 import Home from "../pages/Home/Home";
 import Shop from "../pages/Shop/Shop";
@@ -33,13 +32,8 @@ const router = createBrowserRouter([
         element: <ProductDetails />,
       },
       {
-        element: <ProtectedRoute />,
-        children: [
-          {
-            path: "cart",
-            element: <CartPage />,
-          },
-        ],
+        path: "cart",
+        element: <CartPage />,
       },
     ],
   },
