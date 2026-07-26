@@ -73,7 +73,19 @@ export const getUserCart = async (req, res) => {
     const cartItems = await Cart.find({
       user: req.user._id,
     })
-      .populate("product")
+      .populate({
+        path: "product",
+        populate: [
+          {
+            path: "brand",
+            select: "name",
+          },
+          {
+            path: "category",
+            select: "name",
+          },
+        ],
+      })
       .sort({ createdAt: -1 });
 
     return res.status(200).json({

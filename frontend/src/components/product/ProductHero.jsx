@@ -1,3 +1,6 @@
+import { addToCart } from "../../services/cart.service";
+
+
 import { useState } from "react";
 import {
     Heart,
@@ -19,6 +22,25 @@ function ProductHero({ product }) {
         images = [],
     } = product || {};
 
+
+
+   const handleAddToCart = async () => {
+  try {
+    const res = await addToCart({
+      product: product._id,
+      quantity: 1,
+    });
+
+    console.log("SUCCESS:", res);
+    alert("Product added successfully");
+  } catch (error) {
+    console.log("ERROR:", error);
+    console.log("STATUS:", error.response?.status);
+    console.log("DATA:", error.response?.data);
+
+    alert(error.response?.data?.message || "Unable to add to cart");
+  }
+};
 
 
     const data = [
@@ -270,6 +292,7 @@ function ProductHero({ product }) {
                         {/* Add To Cart */}
 
                         <button
+                            onClick={handleAddToCart}
                             className="
                 flex-1
                 rounded-2xl

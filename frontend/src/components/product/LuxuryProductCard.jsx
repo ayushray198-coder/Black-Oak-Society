@@ -20,6 +20,12 @@ function LuxuryProductCard({ product }) {
             ? images[0].url
             : "https://placehold.co/600x800/0b0b0b/C8A04D?text=Black+Oak";
 
+
+   
+
+
+
+
     return (
         <article
             className="
@@ -183,32 +189,32 @@ function LuxuryProductCard({ product }) {
                         <Eye size={18} />
                     </button>
 
-                    </div>
+                </div>
 
-</Link>
+            </Link>
 
-                                        {/* Bottom Content */}
+            {/* Bottom Content */}
 
-                    <div className="relative z-10 p-6">
+            <div className="relative z-10 p-6">
 
-                        {/* Brand */}
+                {/* Brand */}
 
-                        <span
-                            className="
+                <span
+                    className="
                                 text-xs
                                 uppercase
                                 tracking-[0.35em]
                                 text-[#C8A04D]
                             "
-                        >
-                            {brand?.name}
-                        </span>
+                >
+                    {brand?.name}
+                </span>
 
-                        {/* Product Name */}
+                {/* Product Name */}
 
-                        <Link to={`/products/${_id}`}>
-                            <h3
-                                className="
+                <Link to={`/products/${_id}`}>
+                    <h3
+                        className="
                                     mt-3
                                     line-clamp-2
                                     text-2xl
@@ -219,51 +225,51 @@ function LuxuryProductCard({ product }) {
                                     duration-300
                                     group-hover:text-[#C8A04D]
                                 "
-                            >
-                                {name}
-                            </h3>
-                        </Link>
+                    >
+                        {name}
+                    </h3>
+                </Link>
 
-                        {/* Price */}
+                {/* Price */}
 
-                        <div
-                            className="
+                <div
+                    className="
                                 mt-6
                                 flex
                                 items-center
                                 gap-3
                             "
-                        >
-                            <span
-                                className="
+                >
+                    <span
+                        className="
                                     text-2xl
                                     font-bold
                                     text-[#C8A04D]
                                 "
-                            >
-                                ₹{price?.toLocaleString()}
-                            </span>
+                    >
+                        ₹{price?.toLocaleString()}
+                    </span>
 
-                            {comparePrice > price && (
-                                <span
-                                    className="
+                    {comparePrice > price && (
+                        <span
+                            className="
                                         text-base
                                         text-neutral-500
                                         line-through
                                     "
-                                >
-                                    ₹{comparePrice?.toLocaleString()}
-                                </span>
-                            )}
-                        </div>
+                        >
+                            ₹{comparePrice?.toLocaleString()}
+                        </span>
+                    )}
+                </div>
 
-                        {/* Stock */}
+                {/* Stock */}
 
-                        <div className="mt-6">
+                <div className="mt-6">
 
-                            {stock > 0 ? (
-                                <span
-                                    className="
+                    {stock > 0 ? (
+                        <span
+                            className="
                                         inline-flex
                                         items-center
                                         rounded-full
@@ -278,12 +284,12 @@ function LuxuryProductCard({ product }) {
                                         tracking-[0.18em]
                                         text-emerald-400
                                     "
-                                >
-                                    In Stock
-                                </span>
-                            ) : (
-                                <span
-                                    className="
+                        >
+                            In Stock
+                        </span>
+                    ) : (
+                        <span
+                            className="
                                         inline-flex
                                         items-center
                                         rounded-full
@@ -298,17 +304,17 @@ function LuxuryProductCard({ product }) {
                                         tracking-[0.18em]
                                         text-red-400
                                     "
-                                >
-                                    Out Of Stock
-                                </span>
-                            )}
+                        >
+                            Out Of Stock
+                        </span>
+                    )}
 
-                        </div>
+                </div>
 
-                        {/* Divider */}
+                {/* Divider */}
 
-                        <div
-                            className="
+                <div
+                    className="
                                 my-7
                                 h-px
                                 w-full
@@ -317,12 +323,12 @@ function LuxuryProductCard({ product }) {
                                 via-[#C8A04D]/30
                                 to-transparent
                             "
-                        />
+                />
 
-                        {/* CTA */}
+                {/* CTA */}
 
-                        <button
-                            className="
+                <button
+                    className="
                                 flex
                                 w-full
                                 items-center
@@ -341,15 +347,15 @@ function LuxuryProductCard({ product }) {
                                 hover:scale-[1.02]
                                 hover:bg-[#d4ad57]
                             "
-                        >
-                            <ShoppingBag size={20} />
+                >
+                    <ShoppingBag size={20} />
 
-                            Add To Cart
-                        </button>
+                    Add To Cart
+                </button>
 
-                    </div>
+            </div>
 
-                            </article>
+        </article>
     );
 }
 
