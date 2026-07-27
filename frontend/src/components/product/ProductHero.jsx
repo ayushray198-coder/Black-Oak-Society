@@ -1,4 +1,8 @@
 import { addToCart } from "../../services/cart.service";
+import { useAuth } from "../../context/AuthContext";
+import wishlistService from "../../services/wishlist.service";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 
 import { useState } from "react";
@@ -22,25 +26,130 @@ function ProductHero({ product }) {
         images = [],
     } = product || {};
 
+    const { user } = useAuth();
+    const navigate = useNavigate();
 
 
-   const handleAddToCart = async () => {
-  try {
-    const res = await addToCart({
-      product: product._id,
-      quantity: 1,
-    });
+    const handleAddToCart = async () => {
 
-    console.log("SUCCESS:", res);
-    alert("Product added successfully");
-  } catch (error) {
-    console.log("ERROR:", error);
-    console.log("STATUS:", error.response?.status);
-    console.log("DATA:", error.response?.data);
+        if (!user) {
+            toast.error("Please login first");
+            return;
+        }
 
-    alert(error.response?.data?.message || "Unable to add to cart");
-  }
-};
+        if (stock === 0) {
+            toast.error("Product out of stock");
+            return;
+        }
+
+        if (quantity > stock) {
+            toast.error(`Only ${stock} items available`);
+            return;
+        }
+
+        try {
+
+            setCartLoading(true);
+
+            await addToCart({
+                product: product._id,
+                quantity,
+            });
+
+            toast.success("Added to cart");
+
+        } catch (error) {
+
+            toast.error(
+                error.response?.data?.message ||
+                "Unable to add to cart"
+            );
+
+        } finally {
+
+            setCartLoading(false);
+
+        }
+
+    };
+
+
+
+    const handleWishlist = async () => {
+
+        if (!user) {
+            toast.error("Please login first");
+            return;
+        }
+
+        try {
+
+            setWishlistLoading(true);
+
+            await wishlistService.addToWishlist(product._id);
+
+            setWishlisted(true);
+
+            toast.success("Added to wishlist");
+
+        } catch (error) {
+
+            toast.error(
+                error.response?.data?.message ||
+                "Wishlist failed"
+            );
+
+        } finally {
+
+            setWishlistLoading(false);
+
+        }
+
+    };
+
+
+
+    const handleShare = async () => {
+
+        try {
+
+            if (navigator.share) {
+
+                await navigator.share({
+                    title: name,
+                    text: description,
+                    url: window.location.href,
+                });
+
+            } else {
+
+                await navigator.clipboard.writeText(
+                    window.location.href
+                );
+
+                toast.success("Link copied");
+
+            }
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    };
+    const handleBuyNow = async () => {
+
+        if (!user) {
+            toast.error("Please login first");
+            return;
+        }
+
+        navigate("/checkout");
+
+    };
+
+
 
 
     const data = [
@@ -67,6 +176,8 @@ function ProductHero({ product }) {
     const [selectedImage, setSelectedImage] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [wishlisted, setWishlisted] = useState(false);
+    const [cartLoading, setCartLoading] = useState(false);
+    const [wishlistLoading, setWishlistLoading] = useState(false);
 
     const gallery =
         images.length > 0
@@ -77,7 +188,7 @@ function ProductHero({ product }) {
                 },
             ];
 
-    const currentImage = gallery[selectedImage]?.url;
+    const currentImage = gallery[selectedImage]?.url || gallery[0]?.url;
 
     return (
         <section className="relative overflow-hidden pt-36 pb-24">
@@ -153,6 +264,7 @@ function ProductHero({ product }) {
                                         w-20
                                         object-cover
                                         bg-[#0B0B0B]
+                                        hover:scale-105
                                     "
                                 />
 
@@ -266,6 +378,7 @@ function ProductHero({ product }) {
                         <div className="flex h-16 items-center overflow-hidden rounded-2xl border border-[#222] bg-[#0B0B0B]">
 
                             <button
+                                disabled={cartLoading}
                                 onClick={() =>
                                     setQuantity((prev) => Math.max(1, prev - 1))
                                 }
@@ -279,6 +392,8 @@ function ProductHero({ product }) {
                             </span>
 
                             <button
+
+                                disabled={cartLoading}
                                 onClick={() =>
                                     setQuantity((prev) => prev + 1)
                                 }
@@ -292,6 +407,10 @@ function ProductHero({ product }) {
                         {/* Add To Cart */}
 
                         <button
+
+                            disabled={cartLoading || stock === 0}
+                            disabled:opacity-50
+                            disabled:cursor-not-allowed
                             onClick={handleAddToCart}
                             className="
                 flex-1
@@ -308,8 +427,34 @@ function ProductHero({ product }) {
                         >
                             <span className="flex items-center justify-center gap-3">
                                 <ShoppingBag size={20} />
-                                Add To Cart
+
+                                {
+                                    cartLoading
+                                        ?
+                                        "Adding..."
+                                        :
+                                        "Add To Cart"
+                                }
                             </span>
+                        </button>
+
+                        <button
+                            onClick={handleBuyNow}
+                            className="
+        mt-4
+        w-full
+        rounded-2xl
+        border
+        border-[#D8B46A]
+        py-5
+        font-semibold
+        text-[#D8B46A]
+        transition
+        hover:bg-[#D8B46A]
+        hover:text-black
+    "
+                        >
+                            Buy Now
                         </button>
 
                     </div>
@@ -319,7 +464,9 @@ function ProductHero({ product }) {
                     <div className="mt-6 flex gap-4">
 
                         <button
-                            onClick={() => setWishlisted(!wishlisted)}
+
+                            onClick={handleWishlist}
+                            disabled={wishlistLoading}
                             className="flex h-14 w-14 items-center justify-center rounded-2xl border border-[#222] bg-[#0B0B0B] transition hover:border-[#D8B46A]"
                         >
                             <Heart
@@ -333,6 +480,7 @@ function ProductHero({ product }) {
                         </button>
 
                         <button
+                            onClick={handleShare}
                             className="flex h-14 items-center gap-3 rounded-2xl border border-[#222] bg-[#0B0B0B] px-6 transition hover:border-[#D8B46A]"
                         >
                             <Share2 size={18} />

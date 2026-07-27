@@ -1,70 +1,14 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
-import MainLayout from "../layouts/MainLayout";
+const ProtectedRoute = () => {
+  const { user, loading } = useAuth();
 
-import Home from "../pages/Home/Home";
-import Shop from "../pages/Shop/Shop";
-import ProductDetails from "../pages/ProductDetails/ProductDetails";
-import CartPage from "../pages/Cart/CartPage";
-import NotFound from "../pages/NotFound/NotFound";
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-import Register from "../components/auth/Register";
-import Login from "../components/auth/Login";
-import VerifyOTP from "../components/auth/VerifyOTP";
-import ForgotPassword from "../components/auth/ForgotPassword";
-import ResetPassword from "../components/auth/ResetPassword";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <MainLayout />,
-    children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: "shop",
-        element: <Shop />,
-      },
-      {
-        path: "products/:id",
-        element: <ProductDetails />,
-      },
-      {
-        path: "cart",
-        element: <CartPage />,
-      },
-    ],
-  },
-  {
-    path: "/register",
-    element: <Register />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/verify-otp",
-    element: <VerifyOTP />,
-  },
-  {
-    path: "/forgot-password",
-    element: <ForgotPassword />,
-  },
-  {
-    path: "/reset-password",
-    element: <ResetPassword />,
-  },
-  {
-    path: "*",
-    element: <NotFound />,
-  },
-]);
-
-const AppRoutes = () => {
-  return <RouterProvider router={router} />;
+  return user ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
-export default AppRoutes;
+export default ProtectedRoute;

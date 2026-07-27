@@ -7,6 +7,7 @@ import Home from "../pages/Home/Home";
 import Shop from "../pages/Shop/Shop";
 import ProductDetails from "../pages/ProductDetails/ProductDetails";
 import CartPage from "../pages/Cart/CartPage";
+import WishlistPage from "../pages/Wishlist/WishlistPage";
 import NotFound from "../pages/NotFound/NotFound";
 
 import Register from "../components/auth/Register";
@@ -35,6 +36,13 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
+
+           {
+            path: "wishlist",
+            element: <WishlistPage />,
+          },
+
+
           {
             path: "cart",
             element: <CartPage />,
