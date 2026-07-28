@@ -9,6 +9,7 @@ import HeroMobile from "./HeroMobile";
 const Hero = forwardRef((props, ref) => {
     return (
         <section
+        id="home"
             ref={ref}
             className="relative min-h-screen overflow-hidden text-white"
             style={{

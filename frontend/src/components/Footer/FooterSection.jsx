@@ -8,6 +8,7 @@ function FooterSection() {
 
     return (
         <footer
+        id="contact"
             className="
                 relative
                 overflow-hidden

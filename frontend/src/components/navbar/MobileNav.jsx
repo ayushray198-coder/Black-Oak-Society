@@ -1,30 +1,74 @@
-import { Heart, Search, ShoppingBag, User, X } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import {
+  Heart,
+  Search,
+  ShoppingBag,
+  User,
+  X,
+} from "lucide-react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 const navLinks = [
   {
     name: "Home",
-    path: "/",
+    target: "home",
+    type: "scroll",
   },
   {
     name: "Shop",
     path: "/shop",
+    type: "route",
   },
   {
     name: "Brands",
-    path: "/brands",
+    target: "brands",
+    type: "scroll",
   },
   {
     name: "About",
-    path: "/about",
+    target: "about",
+    type: "scroll",
   },
   {
     name: "Contact",
-    path: "/contact",
+    target: "contact",
+    type: "scroll",
   },
 ];
 
 function MobileNav({ isOpen, setIsOpen }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleScrollNavigation = (target) => {
+    setIsOpen(false);
+
+    if (location.pathname !== "/") {
+      navigate("/", {
+        state: {
+          scrollTo: target,
+        },
+      });
+      return;
+    }
+
+    if (target === "home") {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return;
+    }
+
+    const element = document.getElementById(target);
+
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
   return (
     <div
       className={`fixed inset-0 z-50 lg:hidden transition-all duration-300 ${
@@ -54,20 +98,31 @@ function MobileNav({ isOpen, setIsOpen }) {
         <nav>
           <ul className="space-y-7">
             {navLinks.map((link) => (
-              <li key={link.path}>
-                <NavLink
-                  to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className={({ isActive }) =>
-                    `block text-lg transition duration-300 ${
-                      isActive
-                        ? "text-primary"
-                        : "text-text hover:text-primary"
-                    }`
-                  }
-                >
-                  {link.name}
-                </NavLink>
+              <li key={link.name}>
+                {link.type === "route" ? (
+                  <NavLink
+                    to={link.path}
+                    onClick={() => setIsOpen(false)}
+                    className={({ isActive }) =>
+                      `block text-lg transition duration-300 ${
+                        isActive
+                          ? "text-primary"
+                          : "text-text hover:text-primary"
+                      }`
+                    }
+                  >
+                    {link.name}
+                  </NavLink>
+                ) : (
+                  <button
+                    onClick={() =>
+                      handleScrollNavigation(link.target)
+                    }
+                    className="block text-lg text-text transition duration-300 hover:text-primary"
+                  >
+                    {link.name}
+                  </button>
+                )}
               </li>
             ))}
           </ul>

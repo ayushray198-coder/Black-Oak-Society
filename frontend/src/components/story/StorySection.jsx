@@ -16,7 +16,7 @@ function StorySection() {
     return (
         <section
             ref={sectionRef}
-            id="our-story"
+            id="about"
             style={{
                 backgroundImage: `url(${storyBg})`,
                 backgroundSize: "cover",
