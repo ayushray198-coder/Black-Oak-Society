@@ -188,3 +188,25 @@ export const removeCartItem = async (req, res) => {
     });
   }
 };
+
+
+export const clearCart = async (req, res) => {
+  try {
+    await Cart.deleteMany({
+      user: req.user._id,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Cart cleared successfully.",
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};

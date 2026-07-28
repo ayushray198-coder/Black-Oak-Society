@@ -45,7 +45,7 @@ export const createPaymentOrder = async (req, res) => {
 
     // Razorpay Options
     const options = {
-      amount: order.totalAmount * 100, // paisa
+      amount: Number((order.totalAmount * 100).toFixed(0)), // paisa
       currency: "INR",
       receipt: `receipt_${order._id}`,
     };

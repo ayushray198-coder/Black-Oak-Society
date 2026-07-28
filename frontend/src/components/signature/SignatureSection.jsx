@@ -1,6 +1,7 @@
 import SignatureHeader from "./SignatureHeader";
 import SignatureGrid from "./SignatureGrid";
 import signatureData from "./signatureData";
+import { Link } from "react-router-dom";
 
 import useSignatureAnimation from "../../hooks/useSignatureAnimation";
 import useSignatureProducts from "../../hooks/useSignatureProducts";
@@ -62,7 +63,9 @@ function SignatureSection() {
                 <SignatureGrid products={products} />
 
                 <div className="mt-20 flex justify-center">
-                    <button
+                    <Link
+
+                    to="/shop"
                         className="
         group relative overflow-hidden
         rounded-full border border-[#C89B3C]/30
@@ -93,7 +96,7 @@ function SignatureSection() {
                         <span className="relative z-10">
                             {signatureData.buttonText}
                         </span>
-                    </button>
+                    </Link>
                 </div>
 
             </div>

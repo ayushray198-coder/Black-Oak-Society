@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import editorial from "./editorialData";
+import { Link } from "react-router-dom";
 
 function EditorialContent() {
     return (
@@ -45,13 +46,15 @@ function EditorialContent() {
 
             <div className="mt-14 flex justify-center lg:justify-start">
 
-                <button className="group inline-flex items-center gap-3 rounded-full border border-[#C89B3C] bg-[#111]/30 px-10 py-5 text-[13px] font-semibold uppercase tracking-[0.2em] text-white transition-all duration-500 hover:scale-105 hover:bg-[#C89B3C] hover:text-black hover:shadow-[0_20px_45px_rgba(200,155,60,.25)]">
+                <Link 
+                to="/shop"
+                className="group inline-flex items-center gap-3 rounded-full border border-[#C89B3C] bg-[#111]/30 px-10 py-5 text-[13px] font-semibold uppercase tracking-[0.2em] text-white transition-all duration-500 hover:scale-105 hover:bg-[#C89B3C] hover:text-black hover:shadow-[0_20px_45px_rgba(200,155,60,.25)]">
 
                     <span>{editorial.buttonText}</span>
 
                     <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5" />
 
-                </button>
+                </Link>
 
             </div>
 

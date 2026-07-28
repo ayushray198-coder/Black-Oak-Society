@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import story from "./storyData";
-
+import { Link } from "react-router-dom";
 function StoryContent() {
     return (
         <div
@@ -196,7 +196,8 @@ function StoryContent() {
                     lg:justify-start
                 "
             >
-                <button
+                <Link
+                 to="/shop"
                     className="
                         group
                         relative
@@ -276,7 +277,7 @@ function StoryContent() {
                             group-hover:translate-x-1
                         "
                     />
-                </button>
+                </Link>
             </div>
         </div>
     );

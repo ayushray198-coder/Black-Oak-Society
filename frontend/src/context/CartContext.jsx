@@ -5,6 +5,7 @@ import {
   addToCart as addCartItem,
   updateCartQuantity,
   removeCartItem,
+  clearCart as clearCartService,
 } from "../services/cart.service";
 
 import { useAuth } from "./AuthContext";
@@ -94,6 +95,27 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+
+
+  // Clear Cart
+  const clearCart = async () => {
+    try {
+      await clearCartService();
+
+      setCart([]);
+
+      return { success: true };
+    } catch (error) {
+      console.error("Clear Cart Error:", error);
+
+      return {
+        success: false,
+        error,
+      };
+    }
+  };
+
+
   // Total Quantity
   const cartCount = cart.reduce(
     (total, item) => total + item.quantity,
@@ -120,6 +142,7 @@ export const CartProvider = ({ children }) => {
         addToCart,
         updateQuantity,
         removeFromCart,
+        clearCart,
         cartCount,
         cartTotal,
       }}

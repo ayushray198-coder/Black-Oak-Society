@@ -9,12 +9,14 @@ import ProductDetails from "../pages/ProductDetails/ProductDetails";
 import CartPage from "../pages/Cart/CartPage";
 import WishlistPage from "../pages/Wishlist/WishlistPage";
 import NotFound from "../pages/NotFound/NotFound";
+import CheckoutPage from "../pages/Checkout/CheckoutPage";
 
 import Register from "../components/auth/Register";
 import Login from "../components/auth/Login";
 import VerifyOTP from "../components/auth/VerifyOTP";
 import ForgotPassword from "../components/auth/ForgotPassword";
 import ResetPassword from "../components/auth/ResetPassword";
+import OrderSuccess from "../pages/OrderSuccess/OrderSuccess";
 
 const router = createBrowserRouter([
   {
@@ -37,7 +39,7 @@ const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
 
-           {
+          {
             path: "wishlist",
             element: <WishlistPage />,
           },
@@ -46,6 +48,15 @@ const router = createBrowserRouter([
           {
             path: "cart",
             element: <CartPage />,
+          },
+          {
+            path: "checkout",
+            element: <CheckoutPage />,
+          },
+
+          {
+            path: "order-success",
+            element: <OrderSuccess />,
           },
         ],
       },

@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 
 import { useAuth } from "../../context/AuthContext";
 import { useWishlist } from "../../context/WishlistContext";
+import { useCart } from "../../context/CartContext";
 
 function ProductCard({ product }) {
   const { user } = useAuth();
@@ -19,6 +20,34 @@ function ProductCard({ product }) {
     removeFromWishlist,
     isInWishlist,
   } = useWishlist();
+
+  const { addToCart } = useCart();
+
+  const handleAddToCart = async (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  if (!user) {
+    toast.error("Please login first");
+    return;
+  }
+
+  try {
+    const result = await addToCart({
+      product: _id,
+      quantity: 1,
+    });
+
+    if (result.success) {
+      toast.success("Added to cart");
+    } else {
+      toast.error("Failed to add to cart");
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error("Something went wrong");
+  }
+};
 
   const {
     _id,
@@ -176,12 +205,7 @@ function ProductCard({ product }) {
 
           <button
             type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-
-              // TODO: Add To Cart
-            }}
+            onClick={handleAddToCart}
             className="flex h-11 w-full items-center justify-center gap-2 rounded-full border border-[#C8A04D]/20 bg-gradient-to-r from-[#111111] to-[#171717] text-sm font-medium text-white transition-all duration-300 hover:border-[#D8B46A] hover:bg-[#C8A04D] hover:text-black hover:shadow-[0_10px_30px_rgba(200,160,77,.25)]"
           >
             <ShoppingBag size={16} />

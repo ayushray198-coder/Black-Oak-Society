@@ -52,7 +52,7 @@ const CartItem = ({
             </span>
           </div>
 
-          <h2 className="mt-4 text-3xl font-light text-white">{name}</h2>
+          <h4 className="mt-4 text-3xl font-light text-white">{name}</h4>
 
           <p className="mt-3 line-clamp-2 text-sm leading-7 text-white/55">
             {description}

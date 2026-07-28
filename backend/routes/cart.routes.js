@@ -1,6 +1,6 @@
 import express from "express";
 
-import { addToCart, getUserCart , updateCartQuantity, removeCartItem} from "../controllers/cart.controller.js";
+import { addToCart, getUserCart , updateCartQuantity, removeCartItem, clearCart} from "../controllers/cart.controller.js";
 
 import authMiddleware from "../middlewares/auth.middleware.js";
 
@@ -15,6 +15,10 @@ router.get("/", authMiddleware, getUserCart);
 
 // Update Cart Quantity
 router.put("/:id", authMiddleware, updateCartQuantity);
+
+
+// Clear User Cart
+router.delete("/clear", authMiddleware, clearCart);
 
 // Remove Cart Item
 router.delete("/:id", authMiddleware, removeCartItem);

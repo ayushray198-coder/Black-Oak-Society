@@ -138,17 +138,24 @@ function ProductHero({ product }) {
         }
 
     };
+
+
+
     const handleBuyNow = async () => {
+  if (!user) {
+    toast.error("Please login first");
+    return;
+  }
 
-        if (!user) {
-            toast.error("Please login first");
-            return;
-        }
-
-        navigate("/checkout");
-
-    };
-
+  navigate("/checkout", {
+    state: {
+      buyNowItem: {
+        product,
+        quantity,
+      },
+    },
+  });
+};
 
 
 

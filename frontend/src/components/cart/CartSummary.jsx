@@ -1,22 +1,27 @@
 import { useMemo } from "react";
 import { ArrowRight, ShieldCheck, TicketPercent } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 
 const CartSummary = ({ cart = [], loading = false }) => {
-  const subtotal = useMemo(() => cart.reduce((t,i)=>t+i.price*i.quantity,0), [cart]);
-  const compareSubtotal = useMemo(() => cart.reduce((t,i)=>{
-    const compare=i.product?.comparePrice||i.product?.price||0;
-    return t+compare*i.quantity;
-  },0), [cart]);
+  const subtotal = useMemo(() => cart.reduce((t, i) => t + i.price * i.quantity, 0), [cart]);
+  const compareSubtotal = useMemo(() => cart.reduce((t, i) => {
+    const compare = i.product?.comparePrice || i.product?.price || 0;
+    return t + compare * i.quantity;
+  }, 0), [cart]);
 
-  const savings=Math.max(0,compareSubtotal-subtotal);
-  const shipping=subtotal>=5000||subtotal===0?0:199;
-  const tax=Math.round(subtotal*0.18);
-  const total=subtotal+shipping+tax;
+  const savings = Math.max(0, compareSubtotal - subtotal);
+  const shipping = subtotal >= 5000 || subtotal === 0 ? 0 : 199;
+  const tax = Math.round(subtotal * 0.18);
+  const total = subtotal + shipping + tax;
 
-  const formatPrice=(price=0)=>new Intl.NumberFormat("en-IN",{
-    style:"currency",
-    currency:"INR",
-    maximumFractionDigits:0,
+
+  const navigate = useNavigate();
+
+  const formatPrice = (price = 0) => new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
   }).format(price);
 
   return (
@@ -47,7 +52,7 @@ const CartSummary = ({ cart = [], loading = false }) => {
 
       <div className="space-y-5">
         <div className="flex justify-between"><span className="text-white/60">Subtotal</span><span>{formatPrice(subtotal)}</span></div>
-        <div className="flex justify-between"><span className="text-white/60">Shipping</span><span>{shipping===0?"Free":formatPrice(shipping)}</span></div>
+        <div className="flex justify-between"><span className="text-white/60">Shipping</span><span>{shipping === 0 ? "Free" : formatPrice(shipping)}</span></div>
         <div className="flex justify-between"><span className="text-white/60">Estimated Tax</span><span>{formatPrice(tax)}</span></div>
         <div className="flex justify-between"><span className="text-white/60">Savings</span><span className="text-emerald-400">- {formatPrice(savings)}</span></div>
 
@@ -62,9 +67,13 @@ const CartSummary = ({ cart = [], loading = false }) => {
         </div>
       </div>
 
-      <button disabled={loading||cart.length===0} className="mt-10 flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-500 px-6 py-4 font-semibold text-black">
-        {loading?"Processing...":"Proceed to Checkout"}
-        <ArrowRight size={18}/>
+      <button
+        disabled={loading || cart.length === 0}
+        onClick={() => navigate("/checkout")}
+        className="mt-10 flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-500 px-6 py-4 font-semibold text-black"
+      >
+        {loading ? "Processing..." : "Proceed to Checkout"}
+        <ArrowRight size={18} />
       </button>
 
       <div className="mt-8 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-5">
@@ -73,11 +82,11 @@ const CartSummary = ({ cart = [], loading = false }) => {
             <p className="text-xs uppercase tracking-[0.2em] text-emerald-300">Shipping</p>
             <p className="mt-2 text-sm text-white/70">Complimentary delivery on premium orders above ₹5,000.</p>
           </div>
-          <ShieldCheck size={26} className="text-emerald-400"/>
+          <ShieldCheck size={26} className="text-emerald-400" />
         </div>
       </div>
 
-      {!loading && cart.length===0 && (
+      {!loading && cart.length === 0 && (
         <div className="mt-8 rounded-2xl border border-dashed border-white/10 p-6 text-center">
           <p className="text-white/70">Your cart is currently empty.</p>
         </div>
