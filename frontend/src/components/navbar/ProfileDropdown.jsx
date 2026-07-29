@@ -109,8 +109,8 @@ function ProfileDropdown() {
 
             <div
                 className={`absolute right-0 mt-5 w-[320px] origin-top-right overflow-hidden rounded-3xl border border-[#D8B46A]/20 bg-[#0F0F0F]/95 backdrop-blur-xl shadow-[0_25px_80px_rgba(0,0,0,.55)] transition-all duration-300 ${open
-                        ? "pointer-events-auto translate-y-0 opacity-100 scale-100"
-                        : "pointer-events-none -translate-y-3 opacity-0 scale-95"
+                    ? "pointer-events-auto translate-y-0 opacity-100 scale-100"
+                    : "pointer-events-none -translate-y-3 opacity-0 scale-95"
                     }`}
             >
 
@@ -161,6 +161,16 @@ function ProfileDropdown() {
 
 
                     <NavLink
+                        to="/profile"
+                        onClick={() => setOpen(false)}
+                        className={menuClass("/profile")}
+                    >
+                        <User size={18} />
+                        <span>My Profile</span>
+                    </NavLink>
+
+
+                    <NavLink
                         to="/orders"
                         onClick={() => setOpen(false)}
                         className={menuClass("/orders")}
@@ -189,8 +199,8 @@ function ProfileDropdown() {
                             <div className="my-2 h-px bg-gradient-to-r from-transparent via-[#D8B46A]/20 to-transparent" />
 
                             <NavLink
-                                to="/admin/dashboard"
                                 to="/admin"
+                                onClick={() => setOpen(false)}
                                 className={menuClass("/admin")}
                             >
                                 <LayoutDashboard size={18} />

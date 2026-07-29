@@ -37,7 +37,7 @@ const OrderSuccess = () => {
         {/* Success Icon */}
 
         <div className="flex justify-center">
-          <div className="flex h-24 w-24 items-center justify-center rounded-full border border-green-500/20 bg-green-500/10">
+          <div className="flex h-24 w-24 mt-5 items-center justify-center rounded-full border border-green-500/20 bg-green-500/10">
             <CheckCircle2
               size={60}
               className="text-green-500"
@@ -52,9 +52,9 @@ const OrderSuccess = () => {
             Black Oak Society
           </p>
 
-          <h1 className="mt-3 text-4xl font-bold text-white">
+          <h3 className="mt-3 text-4xl font-bold text-white">
             Payment Successful
-          </h1>
+          </h3>
 
           <p className="mt-4 text-zinc-400">
             Thank you for your purchase.
@@ -69,9 +69,9 @@ const OrderSuccess = () => {
 
           <div className="mb-8 flex items-center gap-3">
             <Package className="text-[#C6A15B]" />
-            <h2 className="text-xl font-semibold text-white">
+            <h4 className="text-xl font-semibold text-white">
               Order Details
-            </h2>
+            </h4>
           </div>
 
           <div className="space-y-6">
@@ -135,14 +135,14 @@ const OrderSuccess = () => {
         <div className="mt-10 flex flex-col gap-4 sm:flex-row">
 
           <button
-            onClick={() => navigate("/products")}
+            onClick={() => navigate("/shop")}
             className="flex-1 rounded-xl bg-[#C6A15B] px-6 py-4 font-semibold text-black transition hover:opacity-90"
           >
             Continue Shopping
           </button>
 
           <button
-            onClick={() => navigate("/my-orders")}
+            onClick={() => navigate("/orders")}
             className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-[#C6A15B]/30 bg-[#111111] px-6 py-4 font-semibold text-white transition hover:border-[#C6A15B]"
           >
             View My Orders

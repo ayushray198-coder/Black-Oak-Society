@@ -14,6 +14,8 @@ import CheckoutPage from "../pages/Checkout/CheckoutPage";
 import OrderSuccess from "../pages/OrderSuccess/OrderSuccess";
 import MyOrders from "../pages/MyOrders/MyOrders";
 import OrderDetails from "../pages/OrderDetails/OrderDetails";
+import Profile from "../pages/Profile/Profile";
+import Settings from "../pages/Settings/Settings";
 import NotFound from "../pages/NotFound/NotFound";
 
 /* Auth */
@@ -78,6 +80,16 @@ const router = createBrowserRouter([
           {
             path: "orders",
             element: <MyOrders />,
+          },
+
+          {
+            path: "settings",
+            element: <Settings />,
+          },
+
+          {
+            path: "profile",
+            element: <Profile />,
           },
 
           {

@@ -5,12 +5,14 @@ import { NavLink } from "react-router-dom";
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
 import NavActions from "./NavActions";
+import SearchModal from "../search/SearchModal";
 
 import logo from "../../assets/logo/black-oak-logo.webp";
 
 function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [searchOpen, setSearchOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -44,16 +46,15 @@ function Navbar() {
                     duration-500
                     ease-out
 
-                    ${
-                        isScrolled
-                            ? `
+                    ${isScrolled
+                        ? `
                                 backdrop-blur-[22px]
                                 bg-black/55
                                 border-b
                                 border-[#C89B3C]/10
                                 shadow-[0_10px_45px_rgba(0,0,0,.45)]
                               `
-                            : "bg-transparent"
+                        : "bg-transparent"
                     }
                 `}
             >
@@ -136,7 +137,9 @@ function Navbar() {
 
                     {/* Right Side */}
 
-                    <NavActions />
+                    <NavActions
+                        setSearchOpen={setSearchOpen}
+                    />
 
                     {/* Mobile */}
 
@@ -161,6 +164,11 @@ function Navbar() {
             <MobileNav
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
+            />
+
+            <SearchModal
+                open={searchOpen}
+                onClose={() => setSearchOpen(false)}
             />
         </>
     );

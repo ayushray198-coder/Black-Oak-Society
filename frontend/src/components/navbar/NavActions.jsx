@@ -13,7 +13,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useWishlist } from "../../context/WishlistContext";
 import { useCart } from "../../context/CartContext";
 
-function NavActions() {
+function NavActions({ setSearchOpen }) {
   const { user } = useAuth();
 
   const { wishlistCount } = useWishlist();
@@ -29,6 +29,7 @@ function NavActions() {
       <button
         type="button"
         aria-label="Search"
+        onClick={() => setSearchOpen(true)}
         className="transition-all duration-300 hover:scale-110 hover:text-[#D8B46A]"
       >
         <Search size={20} strokeWidth={1.8} />
