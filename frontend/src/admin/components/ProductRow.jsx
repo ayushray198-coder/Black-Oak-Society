@@ -4,22 +4,22 @@ const ProductRow = ({
   onDelete,
 }) => {
   return (
-    <tr className="border-b border-zinc-800 transition-colors hover:bg-zinc-900">
+    <tr className="border-b border-zinc-800 transition hover:bg-zinc-900/40">
       {/* Product */}
-      <td className="px-4 py-4">
+      <td className="px-6 py-5">
         <div className="flex items-center gap-4">
           <img
             src={product.images?.[0]?.url}
             alt={product.name}
-            className="h-14 w-14 rounded-lg border border-zinc-700 object-cover"
+            className="h-12 w-12 rounded-lg border border-zinc-800 object-cover"
           />
 
           <div>
-            <h3 className="font-semibold text-white">
+            <h5 className="text-sm font-medium text-white">
               {product.name}
-            </h3>
+            </h5>
 
-            <p className="text-xs text-zinc-400">
+            <p className="mt-1 text-xs text-zinc-500">
               SKU : {product.sku}
             </p>
           </div>
@@ -27,40 +27,40 @@ const ProductRow = ({
       </td>
 
       {/* Brand */}
-      <td className="px-4 py-4 text-zinc-300">
+      <td className="px-4 py-5 text-sm text-zinc-400">
         {product.brand?.name || "-"}
       </td>
 
       {/* Category */}
-      <td className="px-4 py-4 text-zinc-300">
+      <td className="px-4 py-5 text-sm text-zinc-400">
         {product.category?.name || "-"}
       </td>
 
       {/* Price */}
-      <td className="px-4 py-4 font-semibold text-white">
+      <td className="px-4 py-5 text-sm font-semibold text-amber-400">
         ₹{product.price}
       </td>
 
       {/* Stock */}
-      <td className="px-4 py-4">
-        {product.stock <= 5 ? (
-          <span className="rounded-full bg-red-500/20 px-3 py-1 text-xs text-red-400">
-            {product.stock}
-          </span>
-        ) : (
-          <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs text-green-400">
-            {product.stock}
-          </span>
-        )}
+      <td className="px-4 py-5 text-center">
+        <span
+          className={`text-sm font-medium ${
+            product.stock <= 5
+              ? "text-amber-400"
+              : "text-white"
+          }`}
+        >
+          {product.stock}
+        </span>
       </td>
 
       {/* Status */}
-      <td className="px-4 py-4">
+      <td className="px-4 py-5 text-center">
         <span
-          className={`rounded-full px-3 py-1 text-xs ${
+          className={`rounded-lg border px-3 py-1 text-xs font-medium uppercase tracking-wide ${
             product.status === "active"
-              ? "bg-green-500/20 text-green-400"
-              : "bg-red-500/20 text-red-400"
+              ? "border-amber-500/40 text-amber-400"
+              : "border-zinc-700 text-zinc-500"
           }`}
         >
           {product.status}
@@ -68,40 +68,44 @@ const ProductRow = ({
       </td>
 
       {/* Featured */}
-      <td className="px-4 py-4">
+      <td className="px-4 py-5 text-center">
         {product.featured ? (
-          <span className="rounded-full bg-yellow-500/20 px-3 py-1 text-xs text-yellow-400">
-            Yes
+          <span className="text-lg text-amber-400">
+            ★
           </span>
         ) : (
-          <span className="text-zinc-500">—</span>
+          <span className="text-zinc-700">
+            —
+          </span>
         )}
       </td>
 
       {/* Signature */}
-      <td className="px-4 py-4">
+      <td className="px-4 py-5 text-center">
         {product.isSignature ? (
-          <span className="rounded-full bg-purple-500/20 px-3 py-1 text-xs text-purple-400">
-            Yes
+          <span className="text-lg text-amber-400">
+            ★
           </span>
         ) : (
-          <span className="text-zinc-500">—</span>
+          <span className="text-zinc-700">
+            —
+          </span>
         )}
       </td>
 
       {/* Actions */}
-      <td className="px-4 py-4">
+      <td className="px-6 py-5">
         <div className="flex items-center justify-center gap-2">
           <button
             onClick={() => onEdit(product)}
-            className="rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-blue-500"
+            className="rounded-lg border border-amber-500/40 px-4 py-2 text-xs font-medium text-amber-400 transition hover:bg-amber-500 hover:text-black"
           >
             Edit
           </button>
 
           <button
             onClick={() => onDelete(product._id)}
-            className="rounded-lg bg-red-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-red-500"
+            className="rounded-lg border border-zinc-700 px-4 py-2 text-xs font-medium text-zinc-300 transition hover:border-red-500 hover:text-red-400"
           >
             Delete
           </button>

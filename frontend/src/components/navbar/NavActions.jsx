@@ -1,28 +1,25 @@
 import {
   Heart,
-  LogOut,
   Search,
   ShoppingBag,
   User,
 } from "lucide-react";
+
 import { NavLink, useNavigate } from "react-router-dom";
+
+import ProfileDropdown from "./ProfileDropdown";
 
 import { useAuth } from "../../context/AuthContext";
 import { useWishlist } from "../../context/WishlistContext";
 import { useCart } from "../../context/CartContext";
 
 function NavActions() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   const { wishlistCount } = useWishlist();
   const { cartCount } = useCart();
 
-  const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    await logout();
-    navigate("/");
-  };
 
   return (
     <div className="hidden items-center gap-6 lg:flex">
@@ -103,50 +100,11 @@ function NavActions() {
       {/* Auth */}
 
       {user ? (
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="
-            flex
-            items-center
-            gap-2
-            rounded-full
-            border
-            border-[#D8B46A]
-            px-5
-            py-2
-            text-sm
-            font-medium
-            transition-all
-            duration-300
-            hover:bg-[#D8B46A]
-            hover:text-black
-            hover:shadow-[0_0_25px_rgba(216,180,106,.25)]
-          "
-        >
-          <LogOut size={18} strokeWidth={1.8} />
-          Logout
-        </button>
+        <ProfileDropdown />
       ) : (
         <NavLink
           to="/login"
-          className="
-            flex
-            items-center
-            gap-2
-            rounded-full
-            border
-            border-[#D8B46A]
-            px-5
-            py-2
-            text-sm
-            font-medium
-            transition-all
-            duration-300
-            hover:bg-[#D8B46A]
-            hover:text-black
-            hover:shadow-[0_0_25px_rgba(216,180,106,.25)]
-          "
+          className="flex items-center gap-2 rounded-full border border-[#D8B46A] px-5 py-2 text-sm font-medium transition-all duration-300 hover:bg-[#D8B46A] hover:text-black hover:shadow-[0_0_25px_rgba(216,180,106,.25)]"
         >
           <User size={18} strokeWidth={1.8} />
           Login
