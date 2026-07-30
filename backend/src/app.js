@@ -32,7 +32,7 @@ app.use(helmet());
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   })
 );
@@ -49,6 +49,15 @@ app.use(morgan("dev"));
 // ===============================
 // API Routes
 // ===============================
+
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Black Oak Society API is running 🚀",
+  });
+});
+
+
 
 app.use("/api/v1/auth", authRoutes);
 
