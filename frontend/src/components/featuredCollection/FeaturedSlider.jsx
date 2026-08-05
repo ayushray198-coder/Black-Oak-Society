@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Keyboard, Mousewheel } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-
 import "swiper/css";
 
 import FeaturedCard from "./FeaturedCard";
 import FeaturedNavigation from "./FeaturedNavigation";
 import useFeaturedProducts from "../../hooks/useFeaturedProducts";
+import { useCart } from "../../context/CartContext";
 
 function FeaturedSlider() {
     const [swiper, setSwiper] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
+
+    const { addToCart } = useCart();
 
     const {
         products,
@@ -19,17 +21,27 @@ function FeaturedSlider() {
         refetch,
     } = useFeaturedProducts();
 
+    // Add To Cart Handler
+    const handleAddToCart = async (productId) => {
+        const result = await addToCart({
+            product: productId,
+            quantity: 1,
+        });
+
+        if (!result.success) {
+            console.error(result.error);
+        }
+    };
+
     if (loading) {
         return (
             <div className="flex min-h-[500px] items-center justify-center">
                 <div className="flex flex-col items-center gap-5">
-
                     <div className="h-14 w-14 animate-spin rounded-full border-2 border-white/10 border-t-[#C89B3C]" />
 
                     <p className="text-sm uppercase tracking-[0.35em] text-white/60">
                         Loading Collection...
                     </p>
-
                 </div>
             </div>
         );
@@ -38,7 +50,6 @@ function FeaturedSlider() {
     if (error) {
         return (
             <div className="flex min-h-[500px] items-center justify-center">
-
                 <div className="flex max-w-md flex-col items-center rounded-3xl border border-red-500/20 bg-red-500/5 p-8 text-center backdrop-blur-xl">
 
                     <h3 className="text-xl font-semibold text-white">
@@ -58,7 +69,6 @@ function FeaturedSlider() {
                     </button>
 
                 </div>
-
             </div>
         );
     }
@@ -66,7 +76,6 @@ function FeaturedSlider() {
     if (!products.length) {
         return (
             <div className="flex min-h-[500px] items-center justify-center">
-
                 <div className="text-center">
 
                     <h3 className="text-2xl font-semibold text-white">
@@ -78,13 +87,12 @@ function FeaturedSlider() {
                     </p>
 
                 </div>
-
             </div>
         );
     }
 
     return (
-        <div className="relative w-full overflow-hidden ">
+        <div className="relative w-full overflow-hidden">
 
             <Swiper
                 modules={[Keyboard, Mousewheel]}
@@ -92,19 +100,12 @@ function FeaturedSlider() {
                 onSlideChange={(swiperInstance) =>
                     setActiveIndex(swiperInstance.realIndex)
                 }
-                keyboard={{
-                    enabled: true,
-                }}
-                mousewheel={{
-                    forceToAxis: true,
-                }}
+                keyboard={{ enabled: true }}
+                mousewheel={{ forceToAxis: true }}
                 watchOverflow
                 speed={900}
                 spaceBetween={28}
                 slidesPerView={1}
-                centeredSlides={false}
-                slidesOffsetBefore={0}
-                slidesOffsetAfter={0}
                 breakpoints={{
                     640: {
                         slidesPerView: 1,
@@ -130,7 +131,10 @@ function FeaturedSlider() {
                         key={product._id || product.id}
                         className="h-auto"
                     >
-                        <FeaturedCard product={product} />
+                        <FeaturedCard
+                            product={product}
+                            handleAddToCart={handleAddToCart}
+                        />
                     </SwiperSlide>
                 ))}
             </Swiper>

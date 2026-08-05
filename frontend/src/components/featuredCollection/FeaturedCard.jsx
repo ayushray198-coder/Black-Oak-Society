@@ -1,6 +1,6 @@
 import { Heart, ShoppingBag, Star } from "lucide-react";
 
-function FeaturedCard({ product }) {
+function FeaturedCard({ product , handleAddToCart}) {
 
     const {
         name,
@@ -138,7 +138,7 @@ function FeaturedCard({ product }) {
                 </div>
 
             </div>
-                        {/* ========================= */}
+            {/* ========================= */}
 
             {/* BOTTOM SECTION */}
 
@@ -280,7 +280,7 @@ function FeaturedCard({ product }) {
                         to-transparent
                     "
                 />
-                                {/* ========================= */}
+                {/* ========================= */}
 
                 {/* PRICE */}
 
@@ -363,10 +363,9 @@ function FeaturedCard({ product }) {
                             font-medium
                             backdrop-blur-xl
 
-                            ${
-                                stock > 0
-                                    ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
-                                    : "border-red-500/30 bg-red-500/10 text-red-400"
+                            ${stock > 0
+                                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+                                : "border-red-500/30 bg-red-500/10 text-red-400"
                             }
                         `}
                     >
@@ -383,6 +382,7 @@ function FeaturedCard({ product }) {
 
                 <button
                     type="button"
+                    onClick={() => handleAddToCart(product._id)}
                     className="
                         group/button
                         relative
@@ -447,13 +447,7 @@ function FeaturedCard({ product }) {
 
                 </button>
 
-                            </div>
-
-            {/* ========================= */}
-
-            {/* Bottom Golden Glow */}
-
-            {/* ========================= */}
+            </div>
 
             <div
                 className="
@@ -473,7 +467,7 @@ function FeaturedCard({ product }) {
                 "
             />
 
-            {/* Outer Luxury Border */}
+
 
             <div
                 className="
